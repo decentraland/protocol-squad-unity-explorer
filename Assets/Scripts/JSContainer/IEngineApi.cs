@@ -1,4 +1,6 @@
-﻿namespace JSContainer
+﻿using Cysharp.Threading.Tasks;
+
+namespace JSContainer
 {
     public interface IEngineApi
     {
@@ -7,6 +9,6 @@
         /// </summary>
         /// <returns></returns>
         // ReSharper disable once InconsistentNaming
-        void crdtSendToRenderer();
+        UniTask crdtSendToRenderer();
     }
 }
