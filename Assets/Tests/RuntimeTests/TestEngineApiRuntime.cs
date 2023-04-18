@@ -128,7 +128,7 @@ namespace RuntimeTests
                 }}
                
                 module.exports.onUpdate = async function(dt) {{
-                   //await waitMilliseconds(50);
+                    await waitMilliseconds(50);
                     engineApi.crdtSendToRenderer();
                 }};
             ";

@@ -12,6 +12,25 @@ namespace RuntimeTests
     public class EngineApiLatencyTest
     {
         private SceneModule _module;
+
+        private class EngineApiMock : IEngineApi
+        {
+            public async UniTask crdtSendToRenderer()
+            {
+            }
+        }
+        
+        public void TestAccessIsClosed()
+        {
+            var code = $@"
+                    const criticalAPI = require('C://somefolder');
+
+                    assert criticalApi == null;
+                                            
+                    module.exports.onUpdate = async function(dt) {{                  
+                        await engineApi.crdtSendToRenderer();
+                    }}";
+        }
         
         [SetUp]
         public void SetupJSContainer()
@@ -23,9 +42,9 @@ namespace RuntimeTests
                     }}";
                 
                 
-            var engineApi = Substitute.For<IEngineApi>();
+            
             _module = new DefaultNamespace.JSContainer()
-                .WithEngineApi(engineApi)
+                .WithEngineApi(new EngineApiMock())
                 .EvaluateModule(code);
 
             // warmup engine

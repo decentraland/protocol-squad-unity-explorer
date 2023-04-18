@@ -67,6 +67,8 @@ namespace DefaultNamespace
             return new SceneModule(result);
         }
 
+        
+
         public JSContainer WithEngineApi(IEngineApi engineApi)
         {
             _engine.AddHostObject("__engineApiInternal", new EngineApiAdapter(engineApi));
