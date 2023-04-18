@@ -17,7 +17,7 @@ public class SceneModule
         Assert.IsFalse(sceneModule.onUpdate is Undefined, "Module must have onUpdate");
     }
 
-    public async UniTaskVoid OnStart()
+    public async UniTask OnStart()
     {
         Assert.IsTrue(HasOnStart);
         await _sceneModule.onStart();

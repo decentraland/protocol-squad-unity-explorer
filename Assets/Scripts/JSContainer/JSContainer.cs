@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DefaultNamespace.Modules;
 using JSContainer;
 using Microsoft.ClearScript;
@@ -28,6 +30,13 @@ namespace DefaultNamespace
             _engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableTaskPromiseConversion);
             _engine.AddHostType("console", typeof(ConsoleModule));
             _engine.DocumentSettings.AccessFlags = DocumentAccessFlags.EnableFileLoading;
+
+            _engine.Script.waitMilliseconds = new Func<int, object>(WaitMilliSeconds);
+        }
+
+        private async Task WaitMilliSeconds(int milliseconds)
+        {
+            await UniTask.Delay(milliseconds);
         }
 
         /// <summary>
@@ -53,6 +62,7 @@ namespace DefaultNamespace
             //var result = _engine.Evaluate(new DocumentInfo { Category = ModuleCategory.CommonJS }, code);
             var result = _engine.Evaluate(new DocumentInfo { Category = ModuleCategory.CommonJS }, 
                 $"return require('{tmpPath.Replace('\\', '/').Normalize()}')");
+            
             File.Delete(tmpPath);
             return new SceneModule(result);
         }
