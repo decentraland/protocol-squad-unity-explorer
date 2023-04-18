@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "JSContainer",
-        "UniTask"
+        "UniTask",
+        "TestUtils"
     ],
     "includePlatforms": [
         "Editor"

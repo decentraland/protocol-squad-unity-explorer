@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DefaultNamespace;
 using NUnit.Framework;
+using TestUtils;
 using UnityEngine;
 using Application = UnityEngine.Device.Application;
 
@@ -16,18 +17,10 @@ namespace Tests.EditorTests
                 console.log('Test Message from JS @123dj')    
             ";
 
-            var messages = new List<string>();
-            void ApplicationOnlogMessageReceived(string logString, string stacktrace, LogType type)
-            {
-                messages.Add(logString);
-            }
-            
-            Application.logMessageReceived += ApplicationOnlogMessageReceived;
-            
+            using var logInterceptor = new LogInterceptor();
             new DefaultNamespace.JSContainer().Execute(code);
-            
-            Application.logMessageReceived -= ApplicationOnlogMessageReceived;
-            Assert.That(messages, Is.EquivalentTo(new string[]{"Test Message from JS @123dj"}));
+                
+            Assert.That(logInterceptor.Logs, Is.EquivalentTo(new string[]{"Test Message from JS @123dj"}));
         }
     }
 }

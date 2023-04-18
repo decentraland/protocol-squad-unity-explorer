@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using DefaultNamespace.Modules;
 using JSContainer;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
+using UnityEngine;
 
 
 namespace DefaultNamespace
@@ -37,13 +39,26 @@ namespace DefaultNamespace
             _engine.Execute(new DocumentInfo { Category = ModuleCategory.CommonJS }, code);
         }
 
+        /// <summary>
+        /// Evaluate script as CommonJS module
+        /// </summary>
+        /// <param name="code"></param>
+        public SceneModule EvaluateModule(string code)
+        {
+            var tmpPath = Path.GetTempFileName();
+            //var tmpPath = Path.Combine(Path.GetTempPath(), "tempfile.txt");
+            //var tmpPath = Application.temporaryCachePath+ "/tmp.js";
+            File.WriteAllText(path:tmpPath, contents: code);
+
+            //var result = _engine.Evaluate(new DocumentInfo { Category = ModuleCategory.CommonJS }, code);
+            var result = _engine.Evaluate(new DocumentInfo { Category = ModuleCategory.CommonJS }, 
+                $"return require('{tmpPath.Replace('\\', '/').Normalize()}')");
+            File.Delete(tmpPath);
+            return new SceneModule(result);
+        }
+
         public JSContainer WithEngineApi(IEngineApi engineApi)
         {
-            // this guy works
-            // _engine.AddHostObject("vec", new Vector2(12,13));
-            // _engine.DocumentSettings.AddSystemDocument($"~system/vec", ModuleCategory.CommonJS,
-            //     @"module.exports = vec;");
-            
             _engine.AddHostObject("__engineApiInternal", new EngineApiAdapter(engineApi));
             _engine.DocumentSettings.AddSystemDocument($"~system/EngineApi", ModuleCategory.CommonJS,
                 @"module.exports = __engineApiInternal;");
