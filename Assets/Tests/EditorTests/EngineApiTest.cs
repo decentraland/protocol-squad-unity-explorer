@@ -1,19 +1,16 @@
 ﻿using System.IO;
-using Cysharp.Threading.Tasks;
 using JSContainer;
+using Microsoft.ClearScript;
 using NSubstitute;
-using NSubstitute.Core;
-using NSubstitute.Extensions;
 using NUnit.Framework;
 using TestUtils;
-using UnityEngine;
 
 namespace Tests.EditorTests
 {
-    public class TestEngineApi
+    public class EngineApiTest
     {
-        [Test]
-        public void EngineApi_Available_AsSystemModuleInJS()
+       [Test]
+        public void EngineApi_AccessToEngineApi_IsAvailable()
         {
             var engineApi = Substitute.For<IEngineApi>();
             var code = @"
@@ -28,14 +25,14 @@ namespace Tests.EditorTests
 
             engineApi.Received().crdtSendToRenderer();
         }
-        
+
         [Test]
         public void EngineApi_JSModule_EvaluateCodeStepWorks()
         {
             var engineApi = Substitute.For<IEngineApi>();
             
             var code = @"
-                const engineApi = require('~system/EngineApi');
+                // const engineApi = require('~system/EngineApi');
                                 
                 // Evaluation phase
                 console.log('evaluation phase');
@@ -95,10 +92,11 @@ namespace Tests.EditorTests
         }
         
         [Test]
-        public void EngineApi_AccessToStandardRequire_IsProhibited()
+        public void EngineApi_AccessToStandardRequireInExecute_IsProhibited()
         {
-            var extraModule = @"
-                module.exports = 'Any modules evaluated by JSContainer must not have access to modules in fileSystems'
+            var testString = "Any modules evaluated by JSContainer must not have access to modules in fileSystems";
+            var extraModule = $@"
+                module.exports = '{testString}'
             ";
 
             var tempPath = Path.GetTempFileName();
@@ -109,8 +107,40 @@ namespace Tests.EditorTests
                 console.log(testVar);          
             ";
             using var logInterceptor = new LogInterceptor();
-            new DefaultNamespace.JSContainer().Execute(testModule);
-            Assert.That(logInterceptor.Last, Is.Empty);
+
+            Assert.Catch(typeof(ScriptEngineException), () =>
+            {
+                new DefaultNamespace.JSContainer().Execute(testModule);
+            });
+            Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
+            File.Delete(tempPath);
+        }
+        
+        
+        [Test]
+        public void EngineApi_AccessToStandardRequireInEvaluate_IsProhibited()
+        {
+            var testString = "Any modules evaluated by JSContainer must not have access to modules in fileSystems";
+            var extraModule = $@"
+                module.exports = '{testString}'
+            ";
+
+            var tempPath = Path.GetTempFileName();
+            File.WriteAllText(tempPath, extraModule);
+
+            var testModule = $@"
+                const testVar = require('{tempPath.Replace("\\","/").Normalize()}');
+                console.log(testVar);    
+                module.exports.onStart = async function() {{}};
+                module.exports.onUpdate = async function(dt) {{}};      
+            ";
+            using var logInterceptor = new LogInterceptor();
+
+            Assert.Catch(typeof(ScriptEngineException), () =>
+            {
+                new DefaultNamespace.JSContainer().EvaluateModule(testModule);
+            });
+            Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
             File.Delete(tempPath);
         }
     }
