@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JSContainer;
 using NSubstitute;
@@ -96,30 +98,35 @@ namespace RuntimeTests
                 Debug.Log($"averaget ticks:{resultTicks.Average()}  all:"+string.Join(", ", resultTicks));
             });
 
-                // 1. test run chain
+         
+        
+        private class FakeEngineApi : IEngineApi
+        {
+            public string threadName;
+            public DateTime ManagedCallTimeStart;
+            public DateTime ManagedCallTimeEnd;
+
+            public async UniTask crdtSendToRenderer()
+            {
+                ManagedCallTimeStart = DateTime.Now;
+                Debug.Log(">>> " + ManagedCallTimeStart.Millisecond);
+                await Task.Delay(50);
+                ManagedCallTimeEnd = DateTime.Now;
+                Debug.Log(">>> " + ManagedCallTimeEnd.Millisecond);
+                Debug.Log($"{ManagedCallTimeEnd == ManagedCallTimeStart}");
+                threadName = Thread.CurrentThread.Name;
+            }
+        }
+        
+        // 1. test run chain
         [UnityTest]
         public IEnumerator EngineApi_AsyncManagedAsyncJS_ExecuteAsyncSequentially() => UniTask.ToCoroutine(async () =>
         {
-            
-            var timer = new Stopwatch();
-            
-            var engineApi = Substitute.For<IEngineApi>();
-            
-            long managedCallTimeStart = long.MinValue;
-            long managedCallTimeEnd = long.MinValue;
-            long onUpdateEnd = long.MinValue;
-            
-            async UniTask DelayFrame(CallInfo arg)
-            {
-                // js wait 50 ms before call this
-                managedCallTimeStart = timer.ElapsedMilliseconds; 
-                await UniTask.Delay(50);
-                managedCallTimeEnd = timer.ElapsedMilliseconds;
-            }
 
-            engineApi.crdtSendToRenderer().Returns(DelayFrame);
+            await UniTask.SwitchToThreadPool();
+            var threadName = Thread.CurrentThread.Name;
             
-            timer.Start();
+            var fakeEngineApi = new FakeEngineApi();
             var code = $@"
                 const engineApi = require('~system/EngineApi');            
                 
@@ -127,32 +134,42 @@ namespace RuntimeTests
                     // do nothing just warmup?
                 }}
                
-                module.exports.onUpdate = async function(dt) {{
+                module.exports.onUpdate = async function(dt) {{                   
                     await waitMilliseconds(50);
-                    engineApi.crdtSendToRenderer();
+                    await engineApi.crdtSendToRenderer();
+                    console.log('<><><><><>');
                 }};
             ";
-            
-            
-            
+
             var module = new DefaultNamespace.JSContainer()
-                .WithEngineApi(engineApi)
+                .WithEngineApi(fakeEngineApi)
                 .EvaluateModule(code);
 
-            
-            timer.Start();
+            // warmup first 10 executions
+            for (int i = 0; i < 10; i++)
+            {
+                await module.OnUpdate();
+            }
+
+            var startTime = DateTime.Now;
             await module.OnUpdate();
-            timer.Stop();
-            onUpdateEnd = timer.ElapsedMilliseconds;
+            var endTime = DateTime.Now;
             
-            Assert.That(managedCallTimeStart, Is.EqualTo(50));
-            Assert.That(managedCallTimeEnd, Is.EqualTo(100));
-            Assert.That(onUpdateEnd, Is.EqualTo(managedCallTimeEnd));
+            Assert.That(threadName, Is.EqualTo(fakeEngineApi.threadName));
+            
+            // 1 milisecond tolerance for all measurement
+            // We can not use StopWatch in thread pool
+            Assert.That((fakeEngineApi.ManagedCallTimeStart - startTime).Milliseconds, 
+                Is.EqualTo(50).Within(1),  $"1. Subtest {nameof(fakeEngineApi.ManagedCallTimeStart)} problem");
+
+            Debug.Log("---------- measure");
+            Assert.That((fakeEngineApi.ManagedCallTimeEnd - fakeEngineApi.ManagedCallTimeStart).Milliseconds, 
+                Is.EqualTo(50).Within(1), $"2. Subtest {nameof(fakeEngineApi.ManagedCallTimeEnd)} problem  " +
+                                          $"msEnd:{fakeEngineApi.ManagedCallTimeEnd.Millisecond} " +
+                                          $"msStart:{fakeEngineApi.ManagedCallTimeStart.Millisecond}");
+           
+            Assert.That((endTime - fakeEngineApi.ManagedCallTimeEnd).Milliseconds , 
+                Is.EqualTo(0).Within(1), $"3. Subtest end problem");
         });
-
-        // 2. Test run on managed thread
-
-
-
     }
 }

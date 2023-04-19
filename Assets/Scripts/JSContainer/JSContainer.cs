@@ -16,9 +16,7 @@ namespace DefaultNamespace
     {
         private readonly V8ScriptEngine _engine;
         private readonly IReadOnlyDictionary<string, Type> _ioModulesByName;
-
-        private readonly JSModuleCache _moduleCache = new();
-
+        
         static JSContainer()
         {
             V8Settings.GlobalFlags |= V8GlobalFlags.DisableBackgroundWork;
@@ -27,7 +25,7 @@ namespace DefaultNamespace
         public JSContainer()
         {
             _engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableTaskPromiseConversion);
-            // _engine.DocumentSettings.AccessFlags = DocumentAccessFlags.EnableFileLoading;
+        
             _engine.AddHostType("console", typeof(ConsoleModule));
             _engine.Script.waitMilliseconds = new Func<int, object>(WaitMilliSeconds);
             SetupDocumentLoader(_engine);
@@ -42,7 +40,7 @@ namespace DefaultNamespace
         
         private async Task WaitMilliSeconds(int milliseconds)
         {
-            await UniTask.Delay(milliseconds);
+            await Task.Delay(milliseconds);
         }
 
         /// <summary>
@@ -63,9 +61,7 @@ namespace DefaultNamespace
         public SceneModule EvaluateModule(string code)
         {
             var moduleId = $"~tmp/module-{_moduleIdCounter++}";
-            
-            var docInfo = new DocumentInfo { Category = ModuleCategory.CommonJS };
-            
+
             _engine.DocumentSettings.AddSystemDocument(moduleId, ModuleCategory.CommonJS, code);
 
             var result =_engine.Evaluate(new DocumentInfo { Category = ModuleCategory.CommonJS }, $@"
@@ -81,11 +77,11 @@ namespace DefaultNamespace
         {
             _engine.AddHostObject("__engineApi", new EngineApiAdapter(engineApi));
             _engine.DocumentSettings.AddSystemDocument("~system/EngineApi", ModuleCategory.CommonJS, @"
-                module.exports.crdtSendToRenderer = async function(dt) {{                  
-                    __engineApi.crdtSendToRenderer();
+                module.exports.crdtSendToRenderer = async function() {{                  
+                    console.log('before export');
+                    await __engineApi.crdtSendToRenderer();
+                    console.log('after export');
                 }}");
-
-            _moduleCache.AddModuleObject("~system/EngineApi", new EngineApiAdapter(engineApi));
             return this;
         }
     }

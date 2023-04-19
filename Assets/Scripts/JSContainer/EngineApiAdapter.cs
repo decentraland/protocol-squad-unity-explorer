@@ -1,4 +1,7 @@
-﻿namespace JSContainer
+﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+
+namespace JSContainer
 {
     /// <summary>
     /// ClearScript struggle to add host object through interface.
@@ -13,6 +16,6 @@
         }
 
         // ReSharper disable once InconsistentNaming
-        public void crdtSendToRenderer() => _api.crdtSendToRenderer();
+        public async Task crdtSendToRenderer() => await _api.crdtSendToRenderer();
     }
 }
