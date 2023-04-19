@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.IO;
+using Cysharp.Threading.Tasks;
 using JSContainer;
 using NSubstitute;
 using NSubstitute.Core;
@@ -93,5 +94,24 @@ namespace Tests.EditorTests
             Assert.That(scene.HasOnStart, Is.False);
         }
         
+        [Test]
+        public void EngineApi_AccessToStandardRequire_IsProhibited()
+        {
+            var extraModule = @"
+                module.exports = 'Any modules evaluated by JSContainer must not have access to modules in fileSystems'
+            ";
+
+            var tempPath = Path.GetTempFileName();
+            File.WriteAllText(tempPath, extraModule);
+
+            var testModule = $@"
+                const testVar = require('{tempPath.Replace("\\","/").Normalize()}');
+                console.log(testVar);          
+            ";
+            using var logInterceptor = new LogInterceptor();
+            new DefaultNamespace.JSContainer().Execute(testModule);
+            Assert.That(logInterceptor.Last, Is.Empty);
+            File.Delete(tempPath);
+        }
     }
 }
