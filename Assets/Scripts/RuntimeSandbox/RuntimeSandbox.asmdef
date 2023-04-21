@@ -1,14 +1,17 @@
 {
-  "name": "RuntimeSandbox",
-  "rootNamespace": "RuntimeSandbox",
-  "references": [],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "RuntimeSandbox",
+    "rootNamespace": "RuntimeSandbox",
+    "references": [
+        "GUID:6ff55e9f28dbb7c4a90395f9c765f80b",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

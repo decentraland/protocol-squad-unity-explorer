@@ -71,7 +71,7 @@ namespace RuntimeTests
                         .WithEngineApi(engineApi)
                         .EvaluateModule(code);
 
-                    await module.OnUpdate();
+                    await module.OnUpdate(0);
                     var numberOfCalls = 1000;
                     var resultTime = new long[numberOfCalls];
                     var resultTicks = new long[numberOfCalls];
@@ -80,7 +80,7 @@ namespace RuntimeTests
                     {
                         timer.Reset();
                         timer.Start();
-                        await module.OnUpdate();
+                        await module.OnUpdate(0);
                         timer.Stop();
                         resultTime[i] = timer.ElapsedMilliseconds;
                         resultTicks[i] = timer.ElapsedTicks;
@@ -123,10 +123,10 @@ namespace RuntimeTests
                     .EvaluateModule(code);
 
                 // warmup first 10 executions
-                for (var i = 0; i < 10; i++) await module.OnUpdate();
+                for (var i = 0; i < 10; i++) await module.OnUpdate(0);
 
                 var startTime = DateTime.Now;
-                await module.OnUpdate();
+                await module.OnUpdate(0);
                 var endTime = DateTime.Now;
 
                 Assert.That(threadName, Is.EqualTo(fakeEngineApi.threadName));

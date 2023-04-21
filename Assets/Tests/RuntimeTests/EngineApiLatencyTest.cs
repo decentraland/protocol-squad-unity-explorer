@@ -27,7 +27,7 @@ namespace RuntimeTests
                 .EvaluateModule(code);
 
             // warmup engine
-            for (var i = 0; i < 5; i++) _module.OnUpdate();
+            for (var i = 0; i < 5; i++) _module.OnUpdate(0);
         }
 
 
@@ -45,7 +45,7 @@ namespace RuntimeTests
                     var timer = new Stopwatch();
 
                     timer.Start();
-                    await _module.OnUpdate();
+                    await _module.OnUpdate(0);
                     timer.Stop();
 
                     Assert.That(timer.ElapsedMilliseconds, Is.LessThan(10));
@@ -67,7 +67,7 @@ namespace RuntimeTests
                     {
                         timer.Reset();
                         timer.Start();
-                        await _module.OnUpdate();
+                        await _module.OnUpdate(0);
                         timer.Stop();
                         time[i] = timer.ElapsedMilliseconds;
                     }

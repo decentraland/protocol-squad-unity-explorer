@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Microsoft.ClearScript;
 using UnityEngine.Assertions;
 
@@ -25,9 +26,9 @@ namespace JSInterop
             await _sceneModule.onStart();
         }
 
-        public async UniTask OnUpdate()
+        public async UniTask OnUpdate(double dt)
         {
-            await _sceneModule.onUpdate();
+            await _sceneModule.onUpdate(dt);
         }
     }
 }
