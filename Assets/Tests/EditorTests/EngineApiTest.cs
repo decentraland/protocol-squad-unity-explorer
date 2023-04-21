@@ -1,11 +1,10 @@
-﻿using System.IO;
-using JSInterop;
+﻿using JSInterop;
 using Microsoft.ClearScript;
 using NSubstitute;
 using NUnit.Framework;
 using TestUtils;
 
-namespace Tests.EditorTests
+namespace EditorTests
 {
     public class EngineApiTest
     {
@@ -99,18 +98,16 @@ namespace Tests.EditorTests
                 module.exports = '{testString}'
             ";
 
-            var tempPath = Path.GetTempFileName();
-            File.WriteAllText(tempPath, extraModule);
+            using var tmpFile = new TempFileWithContent(extraModule);
 
             var testModule = $@"
-                const testVar = require('{tempPath.Replace("\\", "/").Normalize()}');
+                const testVar = require('{tmpFile.NormalizedPath}');
                 console.log(testVar);          
             ";
             using var logInterceptor = new LogInterceptor();
 
             Assert.Catch(typeof(ScriptEngineException), () => { new JSContainer().Execute(testModule); });
             Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
-            File.Delete(tempPath);
         }
 
 
@@ -122,11 +119,10 @@ namespace Tests.EditorTests
                 module.exports = '{testString}'
             ";
 
-            var tempPath = Path.GetTempFileName();
-            File.WriteAllText(tempPath, extraModule);
+            using var tmpFile = new TempFileWithContent(extraModule);
 
             var testModule = $@"
-                const testVar = require('{tempPath.Replace("\\", "/").Normalize()}');
+                const testVar = require('{tmpFile.NormalizedPath}');
                 console.log(testVar);    
                 module.exports.onStart = async function() {{}};
                 module.exports.onUpdate = async function(dt) {{}};      
@@ -135,7 +131,6 @@ namespace Tests.EditorTests
 
             Assert.Catch(typeof(ScriptEngineException), () => { new JSContainer().EvaluateModule(testModule); });
             Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
-            File.Delete(tempPath);
         }
     }
 }

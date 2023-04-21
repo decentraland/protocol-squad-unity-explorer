@@ -12,18 +12,6 @@ namespace RuntimeTests
     {
         private SceneModule _module;
 
-        public void TestAccessIsClosed()
-        {
-            var code = @"
-                    const criticalAPI = require('C://somefolder');
-
-                    assert criticalApi == null;
-                                            
-                    module.exports.onUpdate = async function(dt) {                  
-                        await engineApi.crdtSendToRenderer();
-                    }";
-        }
-
         [SetUp]
         public void SetupJSContainer()
         {
