@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using JSContainer;
+using JSInterop;
 using Microsoft.ClearScript;
 using NSubstitute;
 using NUnit.Framework;
@@ -9,7 +9,7 @@ namespace Tests.EditorTests
 {
     public class EngineApiTest
     {
-       [Test]
+        [Test]
         public void EngineApi_AccessToEngineApi_IsAvailable()
         {
             var engineApi = Substitute.For<IEngineApi>();
@@ -18,8 +18,8 @@ namespace Tests.EditorTests
                 
                 engineApi.crdtSendToRenderer();
             ";
-            
-            new DefaultNamespace.JSContainer()
+
+            new JSContainer()
                 .WithEngineApi(engineApi)
                 .Execute(code);
 
@@ -30,7 +30,7 @@ namespace Tests.EditorTests
         public void EngineApi_JSModule_EvaluateCodeStepWorks()
         {
             var engineApi = Substitute.For<IEngineApi>();
-            
+
             var code = @"
                 // const engineApi = require('~system/EngineApi');
                                 
@@ -40,21 +40,21 @@ namespace Tests.EditorTests
                 module.exports.onStart = async function() {};
                 module.exports.onUpdate = async function(dt) {};
             ";
-            
+
             using var logInterceptor = new LogInterceptor();
-            new DefaultNamespace.JSContainer()
+            new JSContainer()
                 .WithEngineApi(engineApi)
                 .EvaluateModule(code);
 
             Assert.That(logInterceptor.Last, Is.EqualTo("evaluation phase"));
         }
-        
-        
+
+
         [Test]
         public void EngineApi_JSModuleHasOnStart_EqualTrue()
         {
             var engineApi = Substitute.For<IEngineApi>();
-            
+
             var code = @"
                 const engineApi = require('~system/EngineApi');                                
                 
@@ -65,32 +65,32 @@ namespace Tests.EditorTests
                     console.log('onUpdate');
                 };
             ";
-            
-            var scene = new DefaultNamespace.JSContainer()
+
+            var scene = new JSContainer()
                 .WithEngineApi(engineApi)
                 .EvaluateModule(code);
 
             Assert.That(scene.HasOnStart, Is.True);
         }
-        
+
 
         [Test]
         public void EngineApi_JSModuleHasOnStart_EqualFalse()
         {
             var engineApi = Substitute.For<IEngineApi>();
-            
+
             var code = @"
                 const engineApi = require('~system/EngineApi');            
                 module.exports.onUpdate = async function(dt) {};
             ";
-            
-            var scene = new DefaultNamespace.JSContainer()
+
+            var scene = new JSContainer()
                 .WithEngineApi(engineApi)
                 .EvaluateModule(code);
 
             Assert.That(scene.HasOnStart, Is.False);
         }
-        
+
         [Test]
         public void EngineApi_AccessToStandardRequireInExecute_IsProhibited()
         {
@@ -103,20 +103,17 @@ namespace Tests.EditorTests
             File.WriteAllText(tempPath, extraModule);
 
             var testModule = $@"
-                const testVar = require('{tempPath.Replace("\\","/").Normalize()}');
+                const testVar = require('{tempPath.Replace("\\", "/").Normalize()}');
                 console.log(testVar);          
             ";
             using var logInterceptor = new LogInterceptor();
 
-            Assert.Catch(typeof(ScriptEngineException), () =>
-            {
-                new DefaultNamespace.JSContainer().Execute(testModule);
-            });
+            Assert.Catch(typeof(ScriptEngineException), () => { new JSContainer().Execute(testModule); });
             Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
             File.Delete(tempPath);
         }
-        
-        
+
+
         [Test]
         public void EngineApi_AccessToStandardRequireInEvaluate_IsProhibited()
         {
@@ -129,17 +126,14 @@ namespace Tests.EditorTests
             File.WriteAllText(tempPath, extraModule);
 
             var testModule = $@"
-                const testVar = require('{tempPath.Replace("\\","/").Normalize()}');
+                const testVar = require('{tempPath.Replace("\\", "/").Normalize()}');
                 console.log(testVar);    
                 module.exports.onStart = async function() {{}};
                 module.exports.onUpdate = async function(dt) {{}};      
             ";
             using var logInterceptor = new LogInterceptor();
 
-            Assert.Catch(typeof(ScriptEngineException), () =>
-            {
-                new DefaultNamespace.JSContainer().EvaluateModule(testModule);
-            });
+            Assert.Catch(typeof(ScriptEngineException), () => { new JSContainer().EvaluateModule(testModule); });
             Assert.That(logInterceptor.Last, Is.Not.EqualTo(testString));
             File.Delete(tempPath);
         }

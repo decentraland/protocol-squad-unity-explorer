@@ -1,6 +1,6 @@
 {
-  "name": "TestUtils",
-  "rootNamespace": "TestUtils",
+  "name": "RuntimeSandbox",
+  "rootNamespace": "RuntimeSandbox",
   "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
