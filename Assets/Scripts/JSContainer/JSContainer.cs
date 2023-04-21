@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using DefaultNamespace.Modules;
 using JSContainer;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using UnityEngine;
 
 namespace DefaultNamespace
 {
@@ -78,9 +75,7 @@ namespace DefaultNamespace
             _engine.AddHostObject("__engineApi", new EngineApiAdapter(engineApi));
             _engine.DocumentSettings.AddSystemDocument("~system/EngineApi", ModuleCategory.CommonJS, @"
                 module.exports.crdtSendToRenderer = async function() {{                  
-                    console.log('before export');
                     await __engineApi.crdtSendToRenderer();
-                    console.log('after export');
                 }}");
             return this;
         }

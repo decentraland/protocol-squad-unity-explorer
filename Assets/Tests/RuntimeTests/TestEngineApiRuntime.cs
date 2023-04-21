@@ -109,11 +109,8 @@ namespace RuntimeTests
             public async UniTask crdtSendToRenderer()
             {
                 ManagedCallTimeStart = DateTime.Now;
-                Debug.Log(">>> " + ManagedCallTimeStart.Millisecond);
                 await Task.Delay(50);
                 ManagedCallTimeEnd = DateTime.Now;
-                Debug.Log(">>> " + ManagedCallTimeEnd.Millisecond);
-                Debug.Log($"{ManagedCallTimeEnd == ManagedCallTimeStart}");
                 threadName = Thread.CurrentThread.Name;
             }
         }
@@ -137,7 +134,6 @@ namespace RuntimeTests
                 module.exports.onUpdate = async function(dt) {{                   
                     await waitMilliseconds(50);
                     await engineApi.crdtSendToRenderer();
-                    console.log('<><><><><>');
                 }};
             ";
 
@@ -162,7 +158,6 @@ namespace RuntimeTests
             Assert.That((fakeEngineApi.ManagedCallTimeStart - startTime).Milliseconds, 
                 Is.EqualTo(50).Within(1),  $"1. Subtest {nameof(fakeEngineApi.ManagedCallTimeStart)} problem");
 
-            Debug.Log("---------- measure");
             Assert.That((fakeEngineApi.ManagedCallTimeEnd - fakeEngineApi.ManagedCallTimeStart).Milliseconds, 
                 Is.EqualTo(50).Within(1), $"2. Subtest {nameof(fakeEngineApi.ManagedCallTimeEnd)} problem  " +
                                           $"msEnd:{fakeEngineApi.ManagedCallTimeEnd.Millisecond} " +

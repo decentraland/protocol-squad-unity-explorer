@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using JSContainer;
-using NSubstitute;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 
@@ -81,7 +80,6 @@ namespace RuntimeTests
 
                 var iteration = 1000;
                 var time = new long[iteration];
-                
                 var timer = new Stopwatch();
                 for (int i = 0; i < iteration; i++)
                 {
@@ -91,7 +89,7 @@ namespace RuntimeTests
                     timer.Stop();
                     time[i] = timer.ElapsedMilliseconds;
                 }
-                
+
                 Assert.That(time.Average(), Is.LessThan(1));
             });
 
