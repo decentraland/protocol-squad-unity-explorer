@@ -4,7 +4,9 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using JSContainer;
 using NUnit.Framework;
+using UnityEngine.Profiling;
 using UnityEngine.TestTools;
+using Debug = UnityEngine.Debug;
 
 namespace RuntimeTests
 {
