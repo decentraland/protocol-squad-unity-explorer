@@ -15,7 +15,7 @@ using Debug = UnityEngine.Debug;
 
 namespace RuntimeTests
 {
-    public class TestEngineApiRuntime
+    public class EngineApiRuntimeTest
     {
         [UnityTest]
         public IEnumerator EngineApi_CallBack_AsyncReturnIn1Frame()

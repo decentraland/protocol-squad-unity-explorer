@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.ClearScript;
 using UnityEngine.Assertions;
 
@@ -20,13 +19,13 @@ namespace JSInterop
             Assert.IsFalse(sceneModule.onUpdate is Undefined, "Module must have onUpdate");
         }
 
-        public async UniTask OnStart()
+        public async Task OnStart()
         {
             Assert.IsTrue(HasOnStart);
             await _sceneModule.onStart();
         }
 
-        public async UniTask OnUpdate(double dt)
+        public async Task OnUpdate(double dt)
         {
             await _sceneModule.onUpdate(dt);
         }

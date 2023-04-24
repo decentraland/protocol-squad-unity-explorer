@@ -8,7 +8,7 @@ using Microsoft.ClearScript.V8;
 
 namespace JSInterop
 {
-    public class JSContainer
+    public class JSContainer : IDisposable
     {
         private readonly V8ScriptEngine _engine;
         private readonly IReadOnlyDictionary<string, Type> _ioModulesByName;
@@ -23,7 +23,7 @@ namespace JSInterop
         public JSContainer()
         {
             _engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableTaskPromiseConversion);
-
+            
             _engine.AddHostType("console", typeof(ConsoleModule));
             _engine.Script.waitMilliseconds = new Func<int, object>(WaitMilliSeconds);
             SetupDocumentLoader(_engine);
@@ -78,6 +78,11 @@ namespace JSInterop
                     await __engineApi.crdtSendToRenderer();
                 }}");
             return this;
+        }
+
+        public void Dispose()
+        {
+            _engine?.Dispose();
         }
     }
 }
