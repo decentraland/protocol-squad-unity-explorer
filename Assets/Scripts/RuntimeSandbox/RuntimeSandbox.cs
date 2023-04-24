@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using JSInterop;
+using Debug = UnityEngine.Debug;
 
 [assembly:InternalsVisibleTo("RuntimeTests")]
 
@@ -17,7 +17,7 @@ namespace DefaultNamespace
         private readonly CancellationTokenSource _cts = new();
         internal Thread Thread;
         private readonly TaskCompletionSource<bool> _exitSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        public Task WaitForExitAsync() => _exitSource.Task;
+        private Task WaitForExitAsync() => _exitSource.Task;
         
         
         public RuntimeSandbox(string scene) : this(scene, new EngineApi())
@@ -45,6 +45,7 @@ namespace DefaultNamespace
 
             while (!token.IsCancellationRequested)
             {
+                Debug.Log(">>>lloopp>>");
                 var newTime = Process.GetCurrentProcess().TotalProcessorTime;
                 var dt = (newTime - previousTime).TotalMilliseconds;
                 previousTime = newTime;

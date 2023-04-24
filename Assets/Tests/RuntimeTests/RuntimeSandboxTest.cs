@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using JSInterop;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace RuntimeTests
@@ -21,37 +19,32 @@ namespace RuntimeTests
                 await engineApi.crdtSendToRenderer();
             }";
 
-        //[UnityTest]
+        [UnityTest]
         public IEnumerator RuntimeSandbox_RunLoop_InSeparatedThread() => UniTask.ToCoroutine(async () =>
         {
             var engineApi = Substitute.For<IEngineApi>();
-            int loopThreadName = int.MinValue;
+            int loopThreadId = int.MinValue;
+            var completionTask = new TaskCompletionSource<bool>();
+
             engineApi.crdtSendToRenderer().Returns(_ =>
             {
-                loopThreadName = Thread.CurrentThread.ManagedThreadId;
+                Interlocked.Exchange(ref loopThreadId, Thread.CurrentThread.ManagedThreadId);
+                completionTask.SetResult(true);
                 return UniTask.CompletedTask;
             });
 
             var mainThreadName = Thread.CurrentThread.ManagedThreadId;
 
             var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
-            sandbox.Run(); 
+            sandbox.Run();
+            await completionTask.Task;
             
-            await UniTask.Yield();
-            Assert.That(mainThreadName, Is.Not.EqualTo(loopThreadName), "threads are the same");
+            Assert.That(loopThreadId, Is.Not.EqualTo(int.MinValue), "loop thread id is not set");
+            Assert.That(mainThreadName, Is.Not.EqualTo(loopThreadId), "threads are the same");
         });
 
 
-
-        private class MockEngineApi : IEngineApi
-        {
-            public UniTask crdtSendToRenderer()
-            {
-                return UniTask.CompletedTask;
-            }
-        }
         
-
         [UnityTest]
         public IEnumerator RuntimeSandbox_Dispose_TerminateRunLoop() => UniTask.ToCoroutine(async () =>
         {
@@ -59,13 +52,12 @@ namespace RuntimeTests
             
             engineApi.crdtSendToRenderer().Returns(_ => UniTask.CompletedTask);
 
-            var sandbox = new RuntimeSandbox(MinimalScene, new MockEngineApi());
+            var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
             sandbox.Run();
             await UniTask.DelayFrame(3);
             Assert.That(Thread.CurrentThread.ManagedThreadId, Is.Not.EqualTo(sandbox.Thread.ManagedThreadId));
-            await UniTask.SwitchToMainThread();
+            
             sandbox.Dispose();
-            await UniTask.DelayFrame(15);
             if (sandbox.Thread != null &&  sandbox.Thread.IsAlive) // before any assert let's 
             {
                 Assert.Fail("thread is still alive");
@@ -74,15 +66,24 @@ namespace RuntimeTests
         });
 
 
+        [UnityTest]
         public IEnumerator RuntimeSandbox_Dispose_TimingAreCorrect() => UniTask.ToCoroutine(async () =>
         {
-            Assert.Fail();
+            var engineApi = Substitute.For<IEngineApi>();
+            var invocationNumber = 0;
+            
+            engineApi.crdtSendToRenderer().Returns(_ =>
+            {
+                Interlocked.Increment(ref invocationNumber);
+                return UniTask.CompletedTask;
+            });
+        
+            var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
+            sandbox.Run();
+            await UniTask.DelayFrame(130);
+            sandbox.Dispose();
+            Assert.That(invocationNumber, Is.EqualTo(3));
         });
-
-
-        public void RuntimeSandbox_OnStart_IsOptional()
-        {
-            Assert.Fail();
-        }
+        
     }
 }
