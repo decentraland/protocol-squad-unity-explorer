@@ -65,8 +65,7 @@ namespace JSInterop
                 let result = require('{moduleId}');
                 return result;
             ");
-
-
+            
             return new SceneModule(result);
         }
 

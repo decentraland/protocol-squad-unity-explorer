@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using JSInterop;
 
-namespace DefaultNamespace
+namespace DCLRuntime
 {
     public class EngineApi : IEngineApi
     {

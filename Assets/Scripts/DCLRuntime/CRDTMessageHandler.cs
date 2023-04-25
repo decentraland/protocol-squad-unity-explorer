@@ -1,11 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
-using DCLRuntimeSandbox;
+﻿using System.Threading.Tasks;
 
-namespace RuntimeSandbox.RuntimeSandbox
+namespace DCLRuntime
 {
     public class CRDTMessageHandler : ICRDTMessageHandler
     {
-        public UniTask Process()
+        public Task Process()
         {
             throw new System.NotImplementedException();
         }

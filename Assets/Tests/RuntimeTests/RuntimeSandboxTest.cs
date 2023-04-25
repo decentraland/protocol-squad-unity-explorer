@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace;
+using DCLRuntime;
 using JSInterop;
 using NSubstitute;
 using NUnit.Framework;

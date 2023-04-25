@@ -1,6 +1,6 @@
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace DCLRuntimeSandbox
+namespace DCLRuntime
 {
     
     // this is the instance per scene(JS) which will handle incoming CRDT Messages
@@ -11,6 +11,6 @@ namespace DCLRuntimeSandbox
         /// Method which handle incoming messages.
         /// Run on the main thread
         /// </summary>
-        UniTask Process();
+        Task Process();
     }
 }

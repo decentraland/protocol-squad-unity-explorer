@@ -106,17 +106,17 @@ namespace RuntimeTests
 
                 var fakeEngineApi = new FakeEngineApi();
                 var code = @"
-                const engineApi = require('~system/EngineApi');            
-                
-                module.exports.onStart = async function(){
-                    // do nothing just warmup?
-                }
-               
-                module.exports.onUpdate = async function(dt) {                   
-                    await waitMilliseconds(50);
-                    await engineApi.crdtSendToRenderer();
-                };
-            ";
+                    const engineApi = require('~system/EngineApi');            
+                    
+                    module.exports.onStart = async function(){
+                        // do nothing just warmup?
+                    }
+                   
+                    module.exports.onUpdate = async function(dt) {                   
+                        await waitMilliseconds(50);
+                        await engineApi.crdtSendToRenderer();
+                    };
+                ";
 
                 var module = new JSContainer()
                     .WithEngineApi(fakeEngineApi)
