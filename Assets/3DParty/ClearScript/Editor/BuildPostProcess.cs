@@ -18,7 +18,7 @@ namespace JSContainer.Editor
     public class BuildPostProcess : IPostprocessBuildWithReport
     {
         private const string DLL_ORIGIN_PATH =
-            "Assets/JSContainer/Plugins/runtimes/win-x64/native/ClearScriptV8.win-x64.dll";
+            "Assets/3DParty/ClearScript/Plugins/runtimes/win-x64/native/ClearScriptV8.win-x64.dll";
 
         public int callbackOrder => 0;
 

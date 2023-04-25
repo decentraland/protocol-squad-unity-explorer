@@ -6,7 +6,7 @@ namespace DCLRuntime
     {
         public Task Process()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
