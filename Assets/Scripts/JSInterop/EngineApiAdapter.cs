@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace JSInterop
 {
     /// <summary>
     ///     ClearScript struggle to add host object through interface.
     ///     Use this adapter to forward the call to actual IEngineApi implementation
-    ///     TODO: if we don't use UniTask we can remove this adapter and use IEngineApi directly
     /// </summary>
     public class EngineApiAdapter
     {
@@ -17,6 +17,8 @@ namespace JSInterop
         }
 
         // ReSharper disable once InconsistentNaming
+        // convert unitask to Task here
+        [UsedImplicitly]
         public async Task crdtSendToRenderer()
         {
             await _api.crdtSendToRenderer();
