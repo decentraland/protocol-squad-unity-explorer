@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using DCLRuntimeSandbox;
 using JSInterop;
-using Debug = UnityEngine.Debug;
+using RuntimeSandbox.RuntimeSandbox;
 
 [assembly:InternalsVisibleTo("RuntimeTests")]
 
@@ -15,18 +16,24 @@ namespace DefaultNamespace
         private readonly JSContainer _jsContainer = new();
         private readonly SceneModule _sceneModule;
         private readonly CancellationTokenSource _cts = new();
+        private readonly ICRDTMessageHandler _crdtMessageHandler;
         internal Thread Thread;
         private readonly TaskCompletionSource<bool> _exitSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private Task WaitForExitAsync() => _exitSource.Task;
         
         
-        public RuntimeSandbox(string scene) : this(scene, new EngineApi())
+        public RuntimeSandbox(string scene) : this(scene, new EngineApi(), new CRDTMessageHandler())
+        {
+        }
+
+        internal RuntimeSandbox(string scene, IEngineApi engineApi) : this(scene, engineApi, new CRDTMessageHandler())
         {
         }
         
-        internal RuntimeSandbox(string scene, IEngineApi engineApi)
+        internal RuntimeSandbox(string scene, IEngineApi engineApi, ICRDTMessageHandler crdtMessageHandler)
         {
             _sceneModule = _jsContainer.WithEngineApi(engineApi).EvaluateModule(scene);
+            _crdtMessageHandler = crdtMessageHandler;
         }
         
         public void Run()
@@ -45,7 +52,6 @@ namespace DefaultNamespace
 
             while (!token.IsCancellationRequested)
             {
-                Debug.Log(">>>lloopp>>");
                 var newTime = Process.GetCurrentProcess().TotalProcessorTime;
                 var dt = (newTime - previousTime).TotalMilliseconds;
                 previousTime = newTime;
