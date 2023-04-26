@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.ClearScript.JavaScript;
 
 namespace JSInterop
 {
@@ -21,7 +24,22 @@ namespace JSInterop
         [UsedImplicitly]
         public async Task crdtSendToRenderer()
         {
-            await _api.crdtSendToRenderer();
+            await _api.crdtSendToRenderer(null);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        [UsedImplicitly]
+        public async Task<object> crdtGetState(dynamic parameter)
+        {
+            var data = parameter.data;
+            // data.key data.value
+            return await _api.crdtGetState(data);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        [UsedImplicitly]
+        public async Task crdtGetState()
+        {
         }
     }
 }

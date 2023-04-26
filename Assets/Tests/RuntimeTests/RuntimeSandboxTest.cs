@@ -26,7 +26,7 @@ namespace RuntimeTests
             int loopThreadId = int.MinValue;
             var completionTask = new TaskCompletionSource<bool>();
 
-            engineApi.crdtSendToRenderer().Returns(_ =>
+            engineApi.crdtSendToRenderer(null).Returns(_ =>
             {
                 Interlocked.Exchange(ref loopThreadId, Thread.CurrentThread.ManagedThreadId);
                 completionTask.SetResult(true);
@@ -50,7 +50,7 @@ namespace RuntimeTests
         {
             var engineApi = Substitute.For<IEngineApi>();
             
-            engineApi.crdtSendToRenderer().Returns(_ => UniTask.CompletedTask);
+            engineApi.crdtSendToRenderer(null).Returns(_ => UniTask.CompletedTask);
 
             var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
             sandbox.Run();
@@ -72,7 +72,7 @@ namespace RuntimeTests
             var engineApi = Substitute.For<IEngineApi>();
             var invocationNumber = 0;
             
-            engineApi.crdtSendToRenderer().Returns(_ =>
+            engineApi.crdtSendToRenderer(null).Returns(_ =>
             {
                 Interlocked.Increment(ref invocationNumber);
                 return UniTask.CompletedTask;

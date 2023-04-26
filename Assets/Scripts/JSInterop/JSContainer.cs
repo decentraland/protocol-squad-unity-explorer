@@ -73,9 +73,19 @@ namespace JSInterop
         {
             _engine.AddHostObject("__engineApi", new EngineApiAdapter(engineApi));
             _engine.DocumentSettings.AddSystemDocument("~system/EngineApi", ModuleCategory.CommonJS, @"
-                module.exports.crdtSendToRenderer = async function() {{                  
-                    await __engineApi.crdtSendToRenderer();
-                }}");
+                module.exports.crdtSendToRenderer = async function(buffer) {{                                     
+                    await __engineApi.crdtSendToRenderer(buffer);
+                }}
+                
+                module.exports.crdtGetState = async function(buffer) {{                  
+                    await __engineApi.crdtGetState(buffer);
+                }}
+                
+                module.exports.sendBatch = async function() {{                   
+                    return {events:[]};                   
+                }}
+                "
+            );
             return this;
         }
 

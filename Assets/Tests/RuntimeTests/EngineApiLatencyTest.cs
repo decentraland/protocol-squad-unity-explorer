@@ -78,8 +78,13 @@ namespace RuntimeTests
 
         private class EngineApiMock : IEngineApi
         {
-            public async UniTask crdtSendToRenderer()
+            public async UniTask crdtSendToRenderer(dynamic data)
             {
+            }
+
+            public async UniTask<object> crdtGetState(dynamic data)
+            {
+                return null;
             }
         }
     }
