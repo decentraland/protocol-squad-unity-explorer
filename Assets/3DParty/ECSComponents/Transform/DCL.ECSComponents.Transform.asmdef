@@ -1,0 +1,17 @@
+{
+    "name": "DCL.ECSComponents.Transform",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5e1778ed041a41f7a0c13abb42ca70b6",
+        "GUID:50705a27cf244a1a9d6f1cbff611d646"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
