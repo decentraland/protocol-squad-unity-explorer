@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "73d86259ce31ce7f4dfe1d028ea1c3edf96c23e4"
     },
+    "com.decentraland.rpc-csharp": {
+      "version": "https://github.com/decentraland/rpc-csharp.git?path=rpc-csharp/src",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "62b6c85e47fbaf6a6b99f28029240a83f0219ca9"
+    },
     "com.unity.collab-proxy": {
       "version": "2.0.0",
       "depth": 0,

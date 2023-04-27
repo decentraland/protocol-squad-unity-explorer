@@ -39,7 +39,7 @@ namespace DCLRuntime
                     {
                         if (iterator.Current is CrdtMessage msg)
                         {
-                            Debug.Log($"${msg.Type} - {msg.GetType()} - {msg.EntityId} - {msg.ComponentId} - {string.Join("", (byte[])msg.Data)}");
+                            Debug.Log($"${msg.Type} - {msg.GetType()} - entityId:{msg.EntityId} - compId:{msg.ComponentId} - {string.Join("", (byte[])msg.Data)}");
                         }
                     }
                 }
