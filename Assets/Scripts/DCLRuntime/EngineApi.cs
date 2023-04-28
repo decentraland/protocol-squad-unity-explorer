@@ -3,8 +3,6 @@ using Cysharp.Threading.Tasks;
 using DCL.CRDT;
 using JSInterop;
 using Microsoft.ClearScript.JavaScript;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace DCLRuntime
 {
