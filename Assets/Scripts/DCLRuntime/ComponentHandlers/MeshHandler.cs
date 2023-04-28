@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DCLRuntime.ComponentHandlers
 {
-    public static class MeshHandler
+    internal static class MeshHandler
     {
         public static void Apply(this PBMeshRenderer pbMeshRenderer, GameObject entity)
         {
