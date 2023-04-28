@@ -11,25 +11,19 @@ namespace DCLRuntime
 {
     public class RuntimeSandbox : IDisposable
     {
-        private readonly ICRDTMessageHandler _crdtMessageHandler;
         private readonly CancellationTokenSource _cts = new();
 
         private readonly JSContainer _jsContainer = new();
         private readonly SceneModule _sceneModule;
         internal Thread Thread;
 
-        public RuntimeSandbox(string scene) : this(scene, new EngineApi(), new CRDTMessageHandler())
+        public RuntimeSandbox(string scene) : this(scene, new EngineApi())
         {
         }
 
-        internal RuntimeSandbox(string scene, IEngineApi engineApi) : this(scene, engineApi, new CRDTMessageHandler())
-        {
-        }
-
-        internal RuntimeSandbox(string scene, IEngineApi engineApi, ICRDTMessageHandler crdtMessageHandler)
+        internal RuntimeSandbox(string scene, IEngineApi engineApi)
         {
             _sceneModule = _jsContainer.WithEngineApi(engineApi).EvaluateModule(scene);
-            _crdtMessageHandler = crdtMessageHandler;
         }
 
         public void Dispose()
@@ -72,7 +66,6 @@ namespace DCLRuntime
                     token.ThrowIfCancellationRequested();
                 }, token);
                 token.ThrowIfCancellationRequested();
-                await _crdtMessageHandler.Process();
             }
         }
     }

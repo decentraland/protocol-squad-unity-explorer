@@ -5,7 +5,7 @@ namespace DCLRuntime.ComponentHandlers
 {
     internal static class MeshColliderHandler
     {
-        public static void Apply(this PBMeshCollider pbMeshCollider, GameObject entity)
+        public static void ApplyOn(this PBMeshCollider pbMeshCollider, GameObject entity)
         {
 
             switch (pbMeshCollider.MeshCase)

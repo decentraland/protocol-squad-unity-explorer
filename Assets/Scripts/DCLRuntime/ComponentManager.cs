@@ -40,11 +40,11 @@ namespace DCLRuntime
                     break;
                 case ComponentID.MESH_RENDERER: 
                     var meshRendererData = ProtoSerialization.Deserialize<PBMeshRenderer>(data);
-                    meshRendererData.Apply(entity);
+                    meshRendererData.ApplyOn(entity);
                     break;
                 case ComponentID.MESH_COLLIDER:
                     var meshColliderData = ProtoSerialization.Deserialize<PBMeshCollider>(data);
-                    meshColliderData.Apply(entity);
+                    meshColliderData.ApplyOn(entity);
                     break;
                 default:
                     Debug.LogError($"not supported component {componentId}");

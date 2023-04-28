@@ -7,7 +7,7 @@ namespace DCLRuntime.ComponentHandlers
 {
     internal static class MeshHandler
     {
-        public static void Apply(this PBMeshRenderer pbMeshRenderer, GameObject entity)
+        public static void ApplyOn(this PBMeshRenderer pbMeshRenderer, GameObject entity)
         {
             Mesh mesh = null;
             switch (pbMeshRenderer.MeshCase)
