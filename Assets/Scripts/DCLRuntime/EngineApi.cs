@@ -1,47 +1,47 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
 using DCL.CRDT;
 using JSInterop;
 using Microsoft.ClearScript.JavaScript;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 namespace DCLRuntime
 {
     public class EngineApi : IEngineApi
     {
-       public UniTask crdtSendToRenderer(dynamic data)
-        {
+        private ComponentManager _componentManager = new ComponentManager();
+        
+       public async UniTask crdtSendToRenderer(dynamic data)
+       {
+           await UniTask.SwitchToMainThread();
             HandleData(data);
-            return UniTask.CompletedTask;
-        }
+
+            await UniTask.SwitchToThreadPool();
+       }
 
         public async UniTask<object> crdtGetState(dynamic data)
         {
+           await UniTask.SwitchToMainThread();
             HandleData(data);
+            await UniTask.SwitchToThreadPool();
             return null;
         }
 
 
         private void HandleData(dynamic data)
         {
-            
-            if ((int)data.length > 0)
-            {
-                var buffer = data.buffer;
+            if ((int)data.length <= 0) return;
+            var buffer = data.buffer;
                 
-                var bytes = ((IArrayBuffer) buffer).GetBytes();
-                var memory = new ReadOnlyMemory<byte>(bytes);
-                using (var iterator = CRDTDeserializer.DeserializeBatch(memory))
+            var bytes = ((IArrayBuffer) buffer).GetBytes();
+            var memory = new ReadOnlyMemory<byte>(bytes);
+            using var iterator = CRDTDeserializer.DeserializeBatch(memory);
+            while (iterator.MoveNext())
+            {
+                if (iterator.Current is CrdtMessage msg)
                 {
-                    while (iterator.MoveNext())
-                    {
-                        if (iterator.Current is CrdtMessage msg)
-                        {
-                            Debug.Log($"${msg.Type} - {msg.GetType()} - entityId:{msg.EntityId} - compId:{msg.ComponentId} - {string.Join("", (byte[])msg.Data)}");
-                        }
-                    }
+                    _componentManager.HandleMessage(msg);
                 }
             }
         }
