@@ -16,8 +16,7 @@ namespace DCLRuntime
             {
                 var entity = _sceneRoot.GetCreateEntity(message.EntityId);
                 HandleComponent(entity, message.ComponentId, message.Timestamp, message.Data);
-            } 
-            
+            }
         }
         
         

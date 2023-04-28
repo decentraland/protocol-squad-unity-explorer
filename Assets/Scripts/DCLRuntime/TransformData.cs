@@ -3,12 +3,16 @@ using UnityEngine;
 
 namespace DCLRuntime
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct TransformData
     {
+        [FieldOffset(0)]
         public Vector3 position;
-        public Vector3 scale;
+        [FieldOffset(12)] // 3*4
         public Quaternion rotation;
+        [FieldOffset(28)] // 12 + 4*4
+        public Vector3 scale;
+        [FieldOffset(40)] // 28 + 3*4
         public long parentId;
 
         public static TransformData FromData(byte[] bytes)
