@@ -50,7 +50,7 @@ namespace DCLRuntime
 
         private async void RunFullLoop(CancellationToken token)
         {
-            var previousTime = Process.GetCurrentProcess().TotalProcessorTime;
+            var previousTime = DateTime.Now;
             if (_sceneModule.HasOnStart)
                 await Task.Run(async () =>
                 {
@@ -62,8 +62,8 @@ namespace DCLRuntime
 
             while (!token.IsCancellationRequested)
             {
-                var newTime = Process.GetCurrentProcess().TotalProcessorTime;
-                var dt = (newTime - previousTime).TotalMilliseconds;
+                var newTime = DateTime.Now;
+                var dt = (newTime - previousTime).TotalMilliseconds / 1000d;
                 previousTime = newTime;
                 await Task.Run(async () =>
                 {
