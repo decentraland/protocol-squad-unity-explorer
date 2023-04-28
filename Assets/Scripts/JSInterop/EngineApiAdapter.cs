@@ -19,9 +19,22 @@ namespace JSInterop
         // ReSharper disable once InconsistentNaming
         // convert unitask to Task here
         [UsedImplicitly]
-        public async Task crdtSendToRenderer()
+        public async Task crdtSendToRenderer(dynamic data)
         {
-            await _api.crdtSendToRenderer();
+            await _api.crdtSendToRenderer(data);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        [UsedImplicitly]
+        public async Task<object> crdtGetState(dynamic data)
+        {
+            return await _api.crdtGetState(data);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        [UsedImplicitly]
+        public async Task crdtGetState()
+        {
         }
     }
 }

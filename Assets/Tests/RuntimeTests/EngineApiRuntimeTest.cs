@@ -33,7 +33,7 @@ namespace RuntimeTests
                     endFrame = Time.frameCount;
                 }
 
-                engineApi.crdtSendToRenderer().Returns(DelayFrame);
+                engineApi.crdtSendToRenderer(null).Returns(DelayFrame);
 
                 var code = @"
                 const engineApi = require('~system/EngineApi');
@@ -149,9 +149,14 @@ namespace RuntimeTests
 
         private class MockEngineApi : IEngineApi
         {
-            public UniTask crdtSendToRenderer()
+            public UniTask crdtSendToRenderer(dynamic data)
             {
                 return UniTask.CompletedTask;
+            }
+
+            public async UniTask<object> crdtGetState(dynamic data)
+            {
+                return null;
             }
         }
 
@@ -162,12 +167,17 @@ namespace RuntimeTests
             public DateTime ManagedCallTimeStart;
             public string threadName;
 
-            public async UniTask crdtSendToRenderer()
+            public async UniTask crdtSendToRenderer(dynamic data)
             {
                 ManagedCallTimeStart = DateTime.Now;
                 await Task.Delay(50);
                 ManagedCallTimeEnd = DateTime.Now;
                 threadName = Thread.CurrentThread.Name;
+            }
+
+            public async UniTask<object> crdtGetState(dynamic data)
+            {
+                return null;
             }
         }
     }

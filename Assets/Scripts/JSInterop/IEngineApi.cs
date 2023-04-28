@@ -9,6 +9,8 @@ namespace JSInterop
         /// </summary>
         /// <returns></returns>
         // ReSharper disable once InconsistentNaming
-        UniTask crdtSendToRenderer();
+        UniTask crdtSendToRenderer(dynamic data);
+
+        UniTask<object> crdtGetState(dynamic data);
     }
 }

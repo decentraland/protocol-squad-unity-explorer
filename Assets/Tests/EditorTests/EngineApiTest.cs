@@ -22,7 +22,7 @@ namespace EditorTests
                 .WithEngineApi(engineApi)
                 .Execute(code);
 
-            engineApi.Received().crdtSendToRenderer();
+            engineApi.Received().crdtSendToRenderer(null);
         }
 
         [Test]

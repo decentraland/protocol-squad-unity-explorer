@@ -1,14 +1,43 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using DCL.CRDT;
 using JSInterop;
+using Microsoft.ClearScript.JavaScript;
 
 namespace DCLRuntime
 {
     public class EngineApi : IEngineApi
     {
-        public UniTask crdtSendToRenderer()
+        private readonly ComponentManager _componentManager = new();
+
+        public async UniTask crdtSendToRenderer(dynamic data)
         {
-            // do nothing at the moment
-            return UniTask.CompletedTask;
+            await UniTask.SwitchToMainThread();
+            HandleData(data);
+
+            await UniTask.SwitchToThreadPool();
+        }
+
+        public async UniTask<object> crdtGetState(dynamic data)
+        {
+            await UniTask.SwitchToMainThread();
+            HandleData(data);
+            await UniTask.SwitchToThreadPool();
+            return null;
+        }
+
+
+        private void HandleData(dynamic data)
+        {
+            if ((int)data.length <= 0) return;
+            var buffer = data.buffer;
+
+            var bytes = ((IArrayBuffer)buffer).GetBytes();
+            var memory = new ReadOnlyMemory<byte>(bytes);
+            using var iterator = CRDTDeserializer.DeserializeBatch(memory);
+            while (iterator.MoveNext())
+                if (iterator.Current is CrdtMessage msg)
+                    _componentManager.HandleMessage(msg);
         }
     }
 }

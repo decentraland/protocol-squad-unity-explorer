@@ -23,10 +23,15 @@ namespace JSInterop
         public JSContainer()
         {
             _engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableTaskPromiseConversion);
-            
+
             _engine.AddHostType("console", typeof(ConsoleModule));
             _engine.Script.waitMilliseconds = new Func<int, object>(WaitMilliSeconds);
             SetupDocumentLoader(_engine);
+        }
+
+        public void Dispose()
+        {
+            _engine?.Dispose();
         }
 
         private static void SetupDocumentLoader(V8ScriptEngine engine)
@@ -65,7 +70,7 @@ namespace JSInterop
                 let result = require('{moduleId}');
                 return result;
             ");
-            
+
             return new SceneModule(result);
         }
 
@@ -73,15 +78,20 @@ namespace JSInterop
         {
             _engine.AddHostObject("__engineApi", new EngineApiAdapter(engineApi));
             _engine.DocumentSettings.AddSystemDocument("~system/EngineApi", ModuleCategory.CommonJS, @"
-                module.exports.crdtSendToRenderer = async function() {{                  
-                    await __engineApi.crdtSendToRenderer();
-                }}");
+                module.exports.crdtSendToRenderer = async function(buffer) {{                                     
+                    await __engineApi.crdtSendToRenderer(buffer.data);
+                }}
+                
+                module.exports.crdtGetState = async function(buffer) {{                  
+                    await __engineApi.crdtGetState(buffer.data);
+                }}
+                
+                module.exports.sendBatch = async function() {{                   
+                    return {events:[]};                   
+                }}
+                "
+            );
             return this;
-        }
-
-        public void Dispose()
-        {
-            _engine?.Dispose();
         }
     }
 }
