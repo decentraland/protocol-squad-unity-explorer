@@ -4,12 +4,12 @@ using UnityEngine;
 namespace DCLRuntime
 {
     /// <summary>
-    /// Parent component for all scenes
+    ///     Parent component for all scenes
     /// </summary>
     public class SceneRoot : MonoBehaviour
     {
         private readonly Dictionary<long, GameObject> _entities = new();
-        
+
 
         public static SceneRoot Create()
         {
@@ -17,7 +17,10 @@ namespace DCLRuntime
             return go.AddComponent<SceneRoot>();
         }
 
-        public void ContainsEntity(long entityId) => _entities.ContainsKey(entityId);
+        public void ContainsEntity(long entityId)
+        {
+            _entities.ContainsKey(entityId);
+        }
 
 
         public GameObject GetCreateEntity(long entityId)

@@ -23,10 +23,15 @@ namespace JSInterop
         public JSContainer()
         {
             _engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableTaskPromiseConversion);
-            
+
             _engine.AddHostType("console", typeof(ConsoleModule));
             _engine.Script.waitMilliseconds = new Func<int, object>(WaitMilliSeconds);
             SetupDocumentLoader(_engine);
+        }
+
+        public void Dispose()
+        {
+            _engine?.Dispose();
         }
 
         private static void SetupDocumentLoader(V8ScriptEngine engine)
@@ -65,7 +70,7 @@ namespace JSInterop
                 let result = require('{moduleId}');
                 return result;
             ");
-            
+
             return new SceneModule(result);
         }
 
@@ -87,11 +92,6 @@ namespace JSInterop
                 "
             );
             return this;
-        }
-
-        public void Dispose()
-        {
-            _engine?.Dispose();
         }
     }
 }

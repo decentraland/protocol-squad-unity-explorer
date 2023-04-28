@@ -7,14 +7,13 @@ namespace DCLRuntime.ComponentHandlers
     {
         public static void ApplyOn(this PBMeshCollider pbMeshCollider, GameObject entity)
         {
-
             switch (pbMeshCollider.MeshCase)
             {
                 case PBMeshCollider.MeshOneofCase.Box:
                     entity.AddComponent<BoxCollider>();
                     break;
                 case PBMeshCollider.MeshOneofCase.Plane:
-                    BoxCollider box = entity.AddComponent<BoxCollider>();
+                    var box = entity.AddComponent<BoxCollider>();
                     box.size = new Vector3(1, 1, 0.01f);
                     break;
                 default:

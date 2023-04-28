@@ -13,6 +13,12 @@ namespace DCLRuntime
         private readonly SceneRoot _sceneRoot = SceneRoot.Create();
 
 
+        public void Dispose()
+        {
+            Object.Destroy(_sceneRoot.gameObject);
+        }
+
+
         public void HandleMessage(CrdtMessage message)
         {
             if (message.Type == CrdtMessageType.PUT_COMPONENT)
@@ -21,7 +27,7 @@ namespace DCLRuntime
                 HandleComponent(entity, message.ComponentId, message.Timestamp, message.Data);
             }
         }
-        
+
         private void HandleComponent(GameObject entity, int componentId, int timestamp, object data)
         {
             switch (componentId)
@@ -37,8 +43,9 @@ namespace DCLRuntime
                     {
                         transformData.ApplyOn(entity.transform);
                     }
+
                     break;
-                case ComponentID.MESH_RENDERER: 
+                case ComponentID.MESH_RENDERER:
                     var meshRendererData = ProtoSerialization.Deserialize<PBMeshRenderer>(data);
                     meshRendererData.ApplyOn(entity);
                     break;
@@ -50,12 +57,6 @@ namespace DCLRuntime
                     Debug.LogError($"not supported component {componentId}");
                     break;
             }
-        }
-        
-        
-        public void Dispose()
-        {
-            Object.Destroy(_sceneRoot.gameObject);
         }
     }
 }
