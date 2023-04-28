@@ -24,9 +24,8 @@ namespace DCLRuntime
         {
             if (_entities.TryGetValue(entityId, out var entity)) return entity;
             entity = new GameObject("E-" + entityId);
-            gameObject.transform.parent = transform;
+            entity.transform.SetParent(transform);
             _entities.Add(entityId, entity);
-
             return entity;
         }
     }

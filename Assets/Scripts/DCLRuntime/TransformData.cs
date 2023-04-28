@@ -12,14 +12,21 @@ namespace DCLRuntime
         public Quaternion rotation;
         [FieldOffset(28)] // 12 + 4*4
         public Vector3 scale;
-        [FieldOffset(40)] // 28 + 3*4
-        public long parentId;
+        [FieldOffset(40)] // 28 + 3*4\
+        public int parentId;
 
         public static TransformData FromData(byte[] bytes)
         {
             return Marshal.PtrToStructure<TransformData>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, 0));
         }
 
+
+        public void ApplyWithParentOn(Transform transform, GameObject parent)
+        {
+            transform.SetParent(parent.transform);
+            ApplyOn(transform);
+        }
+        
         public void ApplyOn(Transform transform)
         {
             transform.position = position;

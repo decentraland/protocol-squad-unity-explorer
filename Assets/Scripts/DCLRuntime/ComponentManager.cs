@@ -28,9 +28,17 @@ namespace DCLRuntime
             {
                 case ComponentID.TRANSFORM:
                     var transformData = TransformData.FromData((byte[])data);
-                    transformData.ApplyOn(entity.transform);
+                    if (transformData.parentId != 0)
+                    {
+                        var parent = _sceneRoot.GetCreateEntity(transformData.parentId);
+                        transformData.ApplyWithParentOn(entity.transform, parent);
+                    }
+                    else
+                    {
+                        transformData.ApplyOn(entity.transform);
+                    }
                     break;
-                case ComponentID.MESH_RENDERER:
+                case ComponentID.MESH_RENDERER: 
                     var meshRendererData = ProtoSerialization.Deserialize<PBMeshRenderer>(data);
                     meshRendererData.Apply(entity);
                     break;
