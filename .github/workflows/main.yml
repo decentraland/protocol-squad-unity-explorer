@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   build:
     name: Build my project ✨
-    runs-on: windows-latest
+    runs-on: [self-hosted, windows-latest]
     steps:
       # Checkout
       - name: Checkout repository
