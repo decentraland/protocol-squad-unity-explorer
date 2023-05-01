@@ -31,8 +31,8 @@ namespace DCLRuntime
 
         public void ApplyOn(Transform transform)
         {
-            transform.position = position;
-            transform.rotation = rotation;
+            transform.localPosition = position;
+            transform.localRotation = rotation;
             transform.localScale = scale;
         }
     }
