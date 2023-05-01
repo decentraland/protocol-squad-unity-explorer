@@ -1,0 +1,49 @@
+name: Build and Release Unity Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Unity
+        uses: game-ci/unity-actions@v1
+        with:
+          unityVersion: 2020.3.15f2
+          components: "unity"
+          projectPath: "Path/To/Your/Unity/Project"
+
+      - name: Build
+        run: |
+          UNITY_BUILD_METHOD="BuildPipeline.BuildPlayer"
+          UNITY_BUILD_TARGET="StandaloneWindows64"
+          UNITY_BUILD_LOCATION="./Builds/Win64/MyGame.exe"
+
+          unity-editor \
+            -quit \
+            -batchmode \
+            -nographics \
+            -logFile \
+            -projectPath $GITHUB_WORKSPACE/Path/To/Your/Unity/Project \
+            -executeMethod $UNITY_BUILD_METHOD \
+            -buildTarget $UNITY_BUILD_TARGET \
+            -buildLocation $UNITY_BUILD_LOCATION
+
+      - name: Create Release
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          asset_path: './Builds/Win64'
+          asset_name: 'MyGame-Win64'
+          asset_content_type: 'application/zip'
+          tag_name: ${{ github.ref }}
+          overwrite: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
