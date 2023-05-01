@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build my project ✨
-    runs-on: [self-hosted, windows-latest]
+    runs-on: [windows-latest]
     steps:
       # Checkout
       - name: Checkout repository
