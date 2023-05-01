@@ -24,7 +24,7 @@ jobs:
       # Test
       - name: Run tests
         if: ${{ false }} // temporary disable tests
-        uses: game-ci/unity-test-runner@v2
+        uses: game-ci/unity-test-runner@v2.0.3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
@@ -32,7 +32,7 @@ jobs:
 
       # Build
       - name: Build project
-        uses: game-ci/unity-builder@v2
+        uses: game-ci/unity-builder@v2.0.3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
