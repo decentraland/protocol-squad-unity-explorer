@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using RemoteData;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace DCLRuntime
             var realmData = realmDataJson.ToRealmData();
 
             UrnFactory urnFactory = null;
-            
+
             foreach (var sceneUrn in realmData.configurations.scenesUrn)
             {
                 var urn = UrnFactory.FormatString(sceneUrn);

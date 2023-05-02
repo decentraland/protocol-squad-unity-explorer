@@ -13,26 +13,27 @@ namespace RemoteData
             {
                 Converters = new List<JsonConverter> { new Vector2IntConverter() }
             };
-            
-            return JsonConvert.DeserializeObject<SceneData>(jsonString, settings);
-        } 
 
-        
+            return JsonConvert.DeserializeObject<SceneData>(jsonString, settings);
+        }
+
+
         private class Vector2IntConverter : JsonConverter<Vector2Int>
         {
-            public override Vector2Int ReadJson(JsonReader reader, Type objectType, Vector2Int existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override Vector2Int ReadJson(JsonReader reader, Type objectType, Vector2Int existingValue,
+                bool hasExistingValue, JsonSerializer serializer)
             {
-                string[] parts = ((string)reader.Value).Split(',');
-                int x = int.Parse(parts[0]);
-                int y = int.Parse(parts[1]);
+                var parts = ((string)reader.Value).Split(',');
+                var x = int.Parse(parts[0]);
+                var y = int.Parse(parts[1]);
                 return new Vector2Int(x, y);
             }
 
             public override void WriteJson(JsonWriter writer, Vector2Int value, JsonSerializer serializer)
             {
-                string stringValue = value.x + "," + value.y;
+                var stringValue = value.x + "," + value.y;
                 writer.WriteValue(stringValue);
             }
-        }   
+        }
     }
 }

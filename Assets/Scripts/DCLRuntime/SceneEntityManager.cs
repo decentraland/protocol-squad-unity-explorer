@@ -17,8 +17,7 @@ namespace DCLRuntime
             return go.AddComponent<SceneEntityManager>();
         }
 
-        
-        
+
         public void ContainsEntity(long entityId)
         {
             _entities.ContainsKey(entityId);

@@ -19,10 +19,10 @@ namespace DCLRuntime
         public RuntimeSandbox(string scene, SceneEntityManager sceneEntityManager) : this(scene,
             new EngineApi(new ComponentManager(sceneEntityManager)))
         {
-            
         }
-        
-        public RuntimeSandbox(string scene) : this(scene, new EngineApi(new ComponentManager(SceneEntityManager.Create())))
+
+        public RuntimeSandbox(string scene) : this(scene,
+            new EngineApi(new ComponentManager(SceneEntityManager.Create())))
         {
         }
 

@@ -1,4 +1,3 @@
-
 // ReSharper disable InconsistentNaming
 
 namespace RemoteData
@@ -10,9 +9,9 @@ namespace RemoteData
         public Comms comms;
         public Configurations configurations;
         public UrlWithStatus content;
-        public UrlWithStatus lambdas;
         public bool healthy;
-        
+        public UrlWithStatus lambdas;
+
         public class UrlWithStatus
         {
             public bool healthy;
@@ -21,17 +20,17 @@ namespace RemoteData
 
         public class Comms
         {
+            public string fixedAdapter;
             public bool healthy;
             public string protocol;
-            public string fixedAdapter;
         }
-        
+
         public class Configurations
         {
-            public int networkId;
             public string[] globalScenesUrn;
-            public string[] scenesUrn;
+            public int networkId;
             public string realmName;
+            public string[] scenesUrn;
         }
     }
 }

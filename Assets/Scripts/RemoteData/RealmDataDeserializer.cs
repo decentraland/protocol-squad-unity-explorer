@@ -7,6 +7,6 @@ namespace RemoteData
         public static RealmData ToRealmData(this string jsonString)
         {
             return JsonConvert.DeserializeObject<RealmData>(jsonString);
-        } 
+        }
     }
 }

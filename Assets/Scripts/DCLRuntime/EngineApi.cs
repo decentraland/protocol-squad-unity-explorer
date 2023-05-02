@@ -14,7 +14,7 @@ namespace DCLRuntime
         {
             _componentManager = componentManager;
         }
-        
+
         public async UniTask crdtSendToRenderer(dynamic data)
         {
             await UniTask.SwitchToMainThread();

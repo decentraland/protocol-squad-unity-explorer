@@ -12,11 +12,17 @@ namespace DCLRuntime
     {
         private RuntimeSandbox _sandbox;
         private UrnFactory _urnFactory;
-        
+
+
+        private void OnDestroy()
+        {
+            _sandbox.Dispose();
+        }
+
         public static SceneRoot Create(SceneData sceneData, UrnFactory urnFactory)
         {
             var gameObject = new GameObject(sceneData.metadata.name);
-            var sceneRoot=  gameObject.AddComponent<SceneRoot>();
+            var sceneRoot = gameObject.AddComponent<SceneRoot>();
             sceneRoot.Initialize(sceneData, urnFactory).Forget();
             return sceneRoot;
         }
@@ -30,16 +36,10 @@ namespace DCLRuntime
             var data = sceneData.content.Where(data => data.file == "bin/game.js").First();
 
             var sceneUrn = urnFactory.Create(data.hash);
-            
+
             var sceneJson = (await UnityWebRequest.Get(sceneUrn.URL).SendWebRequest()).downloadHandler.text;
             _sandbox = new RuntimeSandbox(sceneJson, entityManager);
             _sandbox.Run();
-        }
-        
-        
-        private void OnDestroy()
-        {
-            _sandbox.Dispose();
         }
     }
 }
