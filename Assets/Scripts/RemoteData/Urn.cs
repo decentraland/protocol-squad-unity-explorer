@@ -9,6 +9,7 @@ namespace RemoteData
         private const string URN_PREFIX = "urn:decentraland:entity:";
         public readonly string Hash;
         public readonly string BaseUrl;
+        public string URL => $"{BaseUrl}{Hash}";
         
         private Urn(string hash, string baseUrl)
         {

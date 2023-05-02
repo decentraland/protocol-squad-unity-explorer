@@ -9,7 +9,7 @@ namespace EditorTests
     public class RealmJsonTest
     {
         [Test]
-        public void TestJsonFile()
+        public void DeserializedJson_HasCorrectFields()
         {
             var testRealmJsonFileName = "test_realm.json";
             var json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, testRealmJsonFileName));
@@ -22,13 +22,14 @@ namespace EditorTests
         }
 
         [Test]
-        public void TestUrn()
+        public void DeserializedURN_HasCorrectFields()
         {
             var str =
                 "urn:decentraland:entity:bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/";
             var urn = Urn.FormatString(str);
             Assert.That(urn.Hash, Is.EqualTo("bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti"));
             Assert.That(urn.BaseUrl, Is.EqualTo("https://sdk-team-cdn.decentraland.org/ipfs/"));
+            Assert.That(urn.URL, Is.EqualTo("https://sdk-team-cdn.decentraland.org/ipfs/bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti"));
         }
     }
 }
