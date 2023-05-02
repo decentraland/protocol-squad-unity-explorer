@@ -35,12 +35,12 @@ namespace RemoteData
             public ContactData contact;
             public string owner;
             public SceneData scene;
-            public RequiredPermissionData[] requiredPermissions;
+            public string[] requiredPermissions;
             public string main;
             public string[] tags;
             public SpawnPointsData[] spawnPoints;
             
-            private string name;
+            public string name;
             
             public class DisplayData
             {
@@ -59,11 +59,6 @@ namespace RemoteData
                 public Vector2Int[] parcels;
                 [JsonProperty("base")]
                 public Vector2Int Base;
-            }
-            
-            public class RequiredPermissionData // TODO: define props
-            {
-                public bool stub;
             }
 
             public class SpawnPointsData

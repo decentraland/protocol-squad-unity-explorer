@@ -10,12 +10,12 @@ namespace DCLRuntime
 {
     public class ComponentManager : IDisposable
     {
-        private readonly SceneRoot _sceneRoot = SceneRoot.Create();
+        private readonly SceneEntityManager _sceneEntityManager = SceneEntityManager.Create();
 
 
         public void Dispose()
         {
-            Object.Destroy(_sceneRoot.gameObject);
+            Object.Destroy(_sceneEntityManager.gameObject);
         }
 
 
@@ -23,7 +23,7 @@ namespace DCLRuntime
         {
             if (message.Type == CrdtMessageType.PUT_COMPONENT)
             {
-                var entity = _sceneRoot.GetCreateEntity(message.EntityId);
+                var entity = _sceneEntityManager.GetCreateEntity(message.EntityId);
                 HandleComponent(entity, message.ComponentId, message.Timestamp, message.Data);
             }
         }
@@ -36,7 +36,7 @@ namespace DCLRuntime
                     var transformData = TransformData.FromData((byte[])data);
                     if (transformData.parentId != 0)
                     {
-                        var parent = _sceneRoot.GetCreateEntity(transformData.parentId);
+                        var parent = _sceneEntityManager.GetCreateEntity(transformData.parentId);
                         transformData.ApplyWithParentOn(entity.transform, parent);
                     }
                     else

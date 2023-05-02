@@ -1,35 +1,16 @@
-using System.Collections.Generic;
+using RemoteData;
 using UnityEngine;
 
 namespace DCLRuntime
 {
-    /// <summary>
-    ///     Parent component for all scenes
-    /// </summary>
+    [RequireComponent(typeof(SceneEntityManager))]
     public class SceneRoot : MonoBehaviour
     {
-        private readonly Dictionary<long, GameObject> _entities = new();
-
-
-        public static SceneRoot Create()
+        public static SceneRoot Create(SceneData sceneData)
         {
-            var go = new GameObject("sceneRoot");
-            return go.AddComponent<SceneRoot>();
-        }
-
-        public void ContainsEntity(long entityId)
-        {
-            _entities.ContainsKey(entityId);
-        }
-
-
-        public GameObject GetCreateEntity(long entityId)
-        {
-            if (_entities.TryGetValue(entityId, out var entity)) return entity;
-            entity = new GameObject("E-" + entityId);
-            entity.transform.SetParent(transform);
-            _entities.Add(entityId, entity);
-            return entity;
+            var gameObject = new GameObject(sceneData.metadata.name);
+            gameObject.AddComponent<SceneEntityManager>();
+            return gameObject.AddComponent<SceneRoot>();
         }
     }
 }
