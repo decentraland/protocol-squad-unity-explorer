@@ -1,6 +1,6 @@
 // ReSharper disable InconsistentNaming
 
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace RemoteData
