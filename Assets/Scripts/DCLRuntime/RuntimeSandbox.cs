@@ -16,7 +16,13 @@ namespace DCLRuntime
         private readonly SceneModule _sceneModule;
         internal Thread Thread;
 
-        public RuntimeSandbox(string scene) : this(scene, new EngineApi())
+        public RuntimeSandbox(string scene, SceneEntityManager sceneEntityManager) : this(scene,
+            new EngineApi(new ComponentManager(sceneEntityManager)))
+        {
+        }
+
+        public RuntimeSandbox(string scene) : this(scene,
+            new EngineApi(new ComponentManager(SceneEntityManager.Create())))
         {
         }
 

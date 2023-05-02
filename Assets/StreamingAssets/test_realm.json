@@ -1,0 +1,70 @@
+{
+  "acceptingUsers": true,
+  "bff": {
+    "healthy": false,
+    "publicUrl": "https://peer.decentraland.org/bff"
+  },
+  "comms": {
+    "healthy": true,
+    "protocol": "v3",
+    "fixedAdapter": "ws-room:ws-room-service.decentraland.org/rooms/goerli-plaza-main"
+  },
+  "configurations": {
+    "networkId": 0,
+    "globalScenesUrn": [],
+    "scenesUrn": [
+      "urn:decentraland:entity:bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiegnb2iera5kb2aqssykap435isiewhrwbew3gazrtsckolz5jbm4?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibkohnvfpienlsfdecj4gwphj3zg4eiq4komunloynahd6v4fqv44?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreig53brbz5vyl26lgxlhbesklxa33iioeckthq2o26xbnk2ogff6wu?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreif2ss3rk2a6wkpsvg6r4jirnv74ehvgdgqlg4tyleqdnstwrdcciy?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidvavvgtj5qc7bodtexf62nivpprmdr6ehoqnul7cfmtlrv6ljdry?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidxrwa343vrdzkuhfc3i3nktp7vojiv5bwsnnh2mwzk4gz2laygb4?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreigm6hidymrlnez3iknqxtrojbk5ka7h26ia6i5geek6i2qazn6hgy?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreigp4djx2avq7oszv6b3dw2xvjvowqdnrk4qn6qoqakhd7p3p4laka?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidewexjqjkih7nabzg6cuery2yq5pqz75upkyniliebpues7xxy2i?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiarokx4yxyffs3xspj3w5oldelpq7nh2n3cmchr6oji2t2cbfbhim?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidyaqgpupj2pjcpvwb3s2n7vkvdkgkez66gcoz5xkufpsh7they6u?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidahffrk7ylq466vfqsuwtmcwq3zwysm7o6a3lyjjf4kadh7uwbmi?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiam7cmseqmb6armtvxyroxj3xlr6xximkud6nfrxipxwgxnzuvsby?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibfnce2ttt54k76haygmaeecxsu4lcvj2mlx5e7n2c7rjyknrcmea?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreig3ez664kqiddqlhzjhfrbziehmjr7kcijlh4muccjhzqo5z5ei74?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibtrsclaxe524fs3qf23rozf66ffzxnyav4tab6elykpihshgwosa?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreif334tkosnsfxocm7tz6rc6lelm3rb5zmq5dbzhozkmu6pqr3hwfm?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidktpvznctfyub7jee5asyi3ld5xuwgdzykf4z6ted2qqjp5c3yee?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreic5u4gsyqur42ozjn5i5wcukg5tfr6ajh74ivqtldtnvwhla5tfwm?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreidhumh4s25v2zfxc7te4hb7ht6ioku67wekursexiydafw6b7hzia?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreigfjlxezc26qu32rnqignutihnf7554t5m7tflxv4uzvj4jdv2mta?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibz76kqra5kupwteptcargueapljlnkoojctdyep63wxnislltwiy?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreifn76nl2553swnyxfgxxxqby43jr2p3ssauzgkovbk3pnhzofu7nu?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreif72kjnrhdwim4knxnb73oy73yo7j7m46don6pnjozjjy2w3w3zbe?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibxpeo5lcdtj3alxhncvltk3d6vfr6i5v7jkgdi7i2xgkwa6hg6fm?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreigvmrvopqkoqiwhono7gnwfqjgr7hyzvkjjak3vsr4f7dfwhshjte?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibajcfixzwjhuwoedjjw27sbwuosh7tsgd2mpxnrtac7jazeppaye?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiakjusbejesy5gdt5a266fxs4s45q3aupu5mgvx2yreai3xz7kio4?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreid62qsm3ubwm47qnzrfe2wrlawnit2rwuionr3mrol26225khrxeq?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiavlhfws43uvdxtzbh2nxpcnth7l53vo6lgyj5gmrot6mhlvjm3ny?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiggfb5k6aoxv54sdxtd7ktql47yi4ntq5lb4la3xa3ezfwre63voa?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreifcnncizfmc4nt3intd4d6hr7f62boye3lcozhnhsmon3sb43tg4m?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreib5c5bmgi77tymkc3g5ygsjh6eblqxd45xxbipswfuyw4p7wmqlum?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreibf2xqxvynplpglwnfxjyyieh3kwblsrtj7cecyb43tbue2nsnncm?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreib3rargdftlh3didwvg5pstwgn4oebdu4xgoxweow5jdvwzar47bu?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreicyf5jzjqwwzztotkamdgqjx2pefxplvqsk4qicr3p3h3hfkiro2u?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreih4hmcnlb3axvkte2lak2gvrmqqxsyu6ds5w3tqqkpmeuhnckeqwa?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreicowtizytcyzmjm4ihfs6h7j4qlyzpx6jb5fsqfvwcrtpbhdyocla?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreifb4l6cfwdui3behid4x7uqgd3nsqe6quhtm4kolsqswt22mm2k5q?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreifa73utvqan65zbi327x7mh4rnxik7aonqu4peaam4jjdazffmxrm?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/",
+      "urn:decentraland:entity:bafkreiefzdehp7ugrckmic7rpm5l5hxxha7s27cvcdhvjhctya644gieze?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/"
+    ],
+    "realmName": "goerli-plaza-main"
+  },
+  "content": {
+    "healthy": true,
+    "publicUrl": "https://peer.decentraland.org/content"
+  },
+  "lambdas": {
+    "healthy": true,
+    "publicUrl": "https://peer.decentraland.org/lambdas"
+  },
+  "healthy": true
+}

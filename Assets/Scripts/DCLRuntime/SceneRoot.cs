@@ -1,35 +1,45 @@
-using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using DCLRuntime.Utils;
+using RemoteData;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace DCLRuntime
 {
-    /// <summary>
-    ///     Parent component for all scenes
-    /// </summary>
+    [RequireComponent(typeof(SceneEntityManager))]
     public class SceneRoot : MonoBehaviour
     {
-        private readonly Dictionary<long, GameObject> _entities = new();
+        private RuntimeSandbox _sandbox;
+        private UrnFactory _urnFactory;
 
 
-        public static SceneRoot Create()
+        private void OnDestroy()
         {
-            var go = new GameObject("sceneRoot");
-            return go.AddComponent<SceneRoot>();
+            _sandbox.Dispose();
         }
 
-        public void ContainsEntity(long entityId)
+        public static SceneRoot Create(SceneData sceneData, UrnFactory urnFactory)
         {
-            _entities.ContainsKey(entityId);
+            var gameObject = new GameObject(sceneData.metadata.name);
+            var sceneRoot = gameObject.AddComponent<SceneRoot>();
+            sceneRoot.Initialize(sceneData, urnFactory).Forget();
+            return sceneRoot;
         }
 
-
-        public GameObject GetCreateEntity(long entityId)
+        private async UniTaskVoid Initialize(SceneData sceneData, UrnFactory urnFactory)
         {
-            if (_entities.TryGetValue(entityId, out var entity)) return entity;
-            entity = new GameObject("E-" + entityId);
-            entity.transform.SetParent(transform);
-            _entities.Add(entityId, entity);
-            return entity;
+            _urnFactory = urnFactory;
+            var entityManager = gameObject.AddComponent<SceneEntityManager>();
+            gameObject.transform.position = sceneData.metadata.scene.Base.ToWorldPosition();
+
+            var data = sceneData.content.Where(data => data.file == "bin/game.js").First();
+
+            var sceneUrn = urnFactory.Create(data.hash);
+
+            var sceneJson = (await UnityWebRequest.Get(sceneUrn.URL).SendWebRequest()).downloadHandler.text;
+            _sandbox = new RuntimeSandbox(sceneJson, entityManager);
+            _sandbox.Run();
         }
     }
 }
