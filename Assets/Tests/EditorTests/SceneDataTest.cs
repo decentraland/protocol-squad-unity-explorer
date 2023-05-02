@@ -11,7 +11,7 @@ namespace EditorTests
         public void DeserializedSceneData_HasCorrectFields()
         {
             var json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "test_scene.json"));
-            var sceneData = SceneData.FromJson(json);
+            var sceneData = json.ToSceneData();
             Assert.That(sceneData.content[1].file, Is.EqualTo("models/zombieskinbase.png"));
             Assert.That(sceneData.timestamp, Is.EqualTo(1682704677242));
             Assert.That(sceneData.metadata.display.title, Is.EqualTo("zombie-attack"));

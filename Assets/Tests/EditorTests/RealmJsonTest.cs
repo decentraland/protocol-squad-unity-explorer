@@ -13,7 +13,7 @@ namespace EditorTests
         {
             var testRealmJsonFileName = "test_realm.json";
             var json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, testRealmJsonFileName));
-            var realmData = JsonConvert.DeserializeObject<RealmData>(json);
+            var realmData = json.ToRealmData();
             Assert.That(realmData.healthy, Is.True);
             Assert.That(realmData.configurations.scenesUrn[2],
                 Is.EqualTo(
