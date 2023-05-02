@@ -16,13 +16,17 @@ namespace DCLRuntime
             var realmDataJson = (await UnityWebRequest.Get(endPoint).SendWebRequest()).downloadHandler.text;
             var realmData = realmDataJson.ToRealmData();
 
+            UrnFactory urnFactory = null;
+            
             foreach (var sceneUrn in realmData.configurations.scenesUrn)
             {
-                var urn = Urn.FormatString(sceneUrn);
+                var urn = UrnFactory.FormatString(sceneUrn);
+                urnFactory ??= new UrnFactory(urn.BaseUrl);
+
                 Debug.Log($"loading {urn.URL}");
                 var sceneJson = (await UnityWebRequest.Get(urn.URL).SendWebRequest()).downloadHandler.text;
                 var sceneData = sceneJson.ToSceneData();
-                SceneRoot.Create(sceneData);
+                SceneRoot.Create(sceneData, urnFactory);
             }
         }
     }

@@ -10,8 +10,13 @@ namespace DCLRuntime
 {
     public class ComponentManager : IDisposable
     {
-        private readonly SceneEntityManager _sceneEntityManager = SceneEntityManager.Create();
+        private readonly SceneEntityManager _sceneEntityManager;
 
+
+        public ComponentManager(SceneEntityManager sceneEntityManager)
+        {
+            _sceneEntityManager = sceneEntityManager;
+        }
 
         public void Dispose()
         {

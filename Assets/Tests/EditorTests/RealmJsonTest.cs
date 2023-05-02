@@ -26,7 +26,7 @@ namespace EditorTests
         {
             var str =
                 "urn:decentraland:entity:bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti?=&baseUrl=https://sdk-team-cdn.decentraland.org/ipfs/";
-            var urn = Urn.FormatString(str);
+            var urn = UrnFactory.FormatString(str);
             Assert.That(urn.Hash, Is.EqualTo("bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti"));
             Assert.That(urn.BaseUrl, Is.EqualTo("https://sdk-team-cdn.decentraland.org/ipfs/"));
             Assert.That(urn.URL, Is.EqualTo("https://sdk-team-cdn.decentraland.org/ipfs/bafkreidvjhbobdwnnhwyaqbxskwyaxwc5cfuilzqa3gho6lqu7abcrwsti"));

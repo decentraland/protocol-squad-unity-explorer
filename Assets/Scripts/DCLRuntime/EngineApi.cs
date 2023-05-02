@@ -8,8 +8,13 @@ namespace DCLRuntime
 {
     public class EngineApi : IEngineApi
     {
-        private readonly ComponentManager _componentManager = new();
+        private readonly ComponentManager _componentManager;
 
+        public EngineApi(ComponentManager componentManager)
+        {
+            _componentManager = componentManager;
+        }
+        
         public async UniTask crdtSendToRenderer(dynamic data)
         {
             await UniTask.SwitchToMainThread();
