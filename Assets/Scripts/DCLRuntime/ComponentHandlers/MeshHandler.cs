@@ -11,12 +11,11 @@ namespace DCLRuntime.ComponentHandlers
     public class MeshHandler
     {
         private readonly MaterialCache _materialCache;
-        private readonly MeshCache _meshCache;
+        
         [Inject, UsedImplicitly]
-        public MeshHandler(MaterialCache materialCache, MeshCache meshCache)
+        public MeshHandler(MaterialCache materialCache)
         {
             _materialCache = materialCache;
-            _meshCache = meshCache;
         }
         
         public void ApplyOn(PBMeshRenderer pbMeshRenderer, GameObject entity)
@@ -25,20 +24,33 @@ namespace DCLRuntime.ComponentHandlers
             switch (pbMeshRenderer.MeshCase)
             {
                 case PBMeshRenderer.MeshOneofCase.Box:
-                    var uv = pbMeshRenderer.Box.Uvs;
-                    mesh =pbMeshRenderer.Box.Uvs == null ? _meshCache.GetCube() : PrimitiveMeshBuilder.BuildCube(1f);
+                    mesh = PrimitiveMeshBuilder.BuildCube(1f);
                     if (pbMeshRenderer.Box.Uvs != null && pbMeshRenderer.Box.Uvs.Count > 0)
                     {
                         mesh.uv = FloatArrayToV2List(pbMeshRenderer.Box.Uvs);
-                        mesh.RecalculateNormals();
                     }
                     break;
                 case PBMeshRenderer.MeshOneofCase.Sphere:
+                    mesh = PrimitiveMeshBuilder.BuildSphere(1f);
+                    break;
                 case PBMeshRenderer.MeshOneofCase.Cylinder:
+                    mesh = PrimitiveMeshBuilder.BuildCylinder(50, pbMeshRenderer.Cylinder.RadiusTop,
+                        pbMeshRenderer.Cylinder.RadiusBottom, 2f, 0f, true, false);
+                    break;
                 case PBMeshRenderer.MeshOneofCase.Plane:
-                    Debug.LogError("Unsuported mesh renderer");
+                    mesh = PrimitiveMeshBuilder.BuildPlaneV2(1f);    
+                    
+                    if (pbMeshRenderer.Plane.Uvs != null && pbMeshRenderer.Plane.Uvs.Count > 0)
+                    {
+                        var uvs =FloatArrayToV2List(pbMeshRenderer.Plane.Uvs);
+                        mesh.uv = uvs;
+                    }
+                    else
+                    {
+                    }
                     break;
             }
+            mesh.RecalculateNormals();
             
             entity.AddComponent<MeshRenderer>().sharedMaterial = _materialCache.GetStandard();
             entity.AddComponent<MeshFilter>().sharedMesh = mesh;
