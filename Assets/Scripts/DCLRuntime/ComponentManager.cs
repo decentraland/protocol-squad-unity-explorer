@@ -4,6 +4,7 @@ using DCL.ECS7;
 using DCL.ECSComponents;
 using DCLRuntime.ComponentHandlers;
 using UnityEngine;
+using VContainer;
 using Object = UnityEngine.Object;
 
 namespace DCLRuntime
@@ -13,6 +14,7 @@ namespace DCLRuntime
         private readonly SceneEntityManager _sceneEntityManager;
 
 
+        [Inject]
         public ComponentManager(SceneEntityManager sceneEntityManager)
         {
             _sceneEntityManager = sceneEntityManager;

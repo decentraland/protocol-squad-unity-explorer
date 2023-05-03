@@ -3,12 +3,14 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using JSInterop;
+using VContainer;
+using VContainer.Unity;
 
 [assembly: InternalsVisibleTo("RuntimeTests")]
 
 namespace DCLRuntime
 {
-    public class RuntimeSandbox : IDisposable
+    public class RuntimeSandbox : IDisposable, IStartable
     {
         private readonly CancellationTokenSource _cts = new();
 
@@ -16,7 +18,8 @@ namespace DCLRuntime
         private readonly SceneModule _sceneModule;
         internal Thread Thread;
 
-        public RuntimeSandbox(string scene, SceneEntityManager sceneEntityManager) : this(scene,
+        [Inject]
+        public RuntimeSandbox(SceneJsonWrapper scene, SceneEntityManager sceneEntityManager) : this(scene.Json,
             new EngineApi(new ComponentManager(sceneEntityManager)))
         {
         }
@@ -43,7 +46,7 @@ namespace DCLRuntime
             _jsContainer.Dispose();
         }
 
-        public void Run()
+        public void Start()
         {
             RunFullLoop(_cts.Token);
         }

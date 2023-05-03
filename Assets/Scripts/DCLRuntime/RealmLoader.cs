@@ -1,16 +1,19 @@
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using RemoteData;
 using UnityEngine;
 using UnityEngine.Networking;
+using VContainer;
 
 namespace DCLRuntime
 {
     public class RealmLoader : MonoBehaviour
     {
         [SerializeField] private string endPoint = "https://sdk-team-cdn.decentraland.org/ipfs/goerli-plaza-main/about";
+        [Inject] [UsedImplicitly] private SceneCreator _sceneCreator;
 
 
-        public async UniTask Start()
+        public async void Start()
         {
             var realmDataJson = (await UnityWebRequest.Get(endPoint).SendWebRequest()).downloadHandler.text;
             var realmData = realmDataJson.ToRealmData();
@@ -25,7 +28,7 @@ namespace DCLRuntime
                 Debug.Log($"loading {urn.URL}");
                 var sceneJson = (await UnityWebRequest.Get(urn.URL).SendWebRequest()).downloadHandler.text;
                 var sceneData = sceneJson.ToSceneData();
-                SceneRoot.Create(sceneData, urnFactory);
+                _sceneCreator.Create(sceneData, urn.BaseUrl);
             }
         }
     }
