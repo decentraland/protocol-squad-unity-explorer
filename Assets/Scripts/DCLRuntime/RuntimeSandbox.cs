@@ -19,19 +19,9 @@ namespace DCLRuntime
         internal Thread Thread;
 
         [Inject]
-        public RuntimeSandbox(SceneJsonWrapper scene, SceneEntityManager sceneEntityManager) : this(scene.Json,
-            new EngineApi(new ComponentManager(sceneEntityManager)))
+        internal RuntimeSandbox(SceneJsonWrapper scene, IEngineApi engineApi)
         {
-        }
-
-        public RuntimeSandbox(string scene) : this(scene,
-            new EngineApi(new ComponentManager(SceneEntityManager.Create())))
-        {
-        }
-
-        internal RuntimeSandbox(string scene, IEngineApi engineApi)
-        {
-            _sceneModule = _jsContainer.WithEngineApi(engineApi).EvaluateModule(scene);
+            _sceneModule = _jsContainer.WithEngineApi(engineApi).EvaluateModule(scene.Json);
         }
 
         public void Dispose()

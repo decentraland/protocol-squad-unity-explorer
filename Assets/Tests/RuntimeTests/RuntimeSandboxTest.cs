@@ -35,7 +35,7 @@ namespace RuntimeTests
 
             var mainThreadName = Thread.CurrentThread.ManagedThreadId;
 
-            var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
+            var sandbox = new RuntimeSandbox(new SceneJsonWrapper(MinimalScene), engineApi);
             sandbox.Start();
             await completionTask.Task;
             
@@ -52,7 +52,7 @@ namespace RuntimeTests
             
             engineApi.crdtSendToRenderer(null).Returns(_ => UniTask.CompletedTask);
 
-            var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
+            var sandbox = new RuntimeSandbox(new SceneJsonWrapper(MinimalScene), engineApi);
             sandbox.Start();
             await UniTask.DelayFrame(3);
             Assert.That(Thread.CurrentThread.ManagedThreadId, Is.Not.EqualTo(sandbox.Thread.ManagedThreadId));
@@ -78,7 +78,7 @@ namespace RuntimeTests
                 return UniTask.CompletedTask;
             });
         
-            var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
+            var sandbox = new RuntimeSandbox(new SceneJsonWrapper(MinimalScene), engineApi);
             sandbox.Start();
             await UniTask.DelayFrame(130);
             sandbox.Dispose();
