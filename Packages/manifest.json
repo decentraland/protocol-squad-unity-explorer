@@ -18,6 +18,16 @@
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.physics2d": "1.0.0",
     "com.unity.modules.ui": "1.0.0",
-    "com.unity.modules.video": "1.0.0"
-  }
+    "com.unity.modules.video": "1.0.0",
+    "jp.hadashikick.vcontainer": "1.13.1"
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "jp.hadashikick.vcontainer"
+      ]
+    }
+  ]
 }

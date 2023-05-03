@@ -36,7 +36,7 @@ namespace RuntimeTests
             var mainThreadName = Thread.CurrentThread.ManagedThreadId;
 
             var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
-            sandbox.Run();
+            sandbox.Start();
             await completionTask.Task;
             
             Assert.That(loopThreadId, Is.Not.EqualTo(int.MinValue), "loop thread id is not set");
@@ -53,7 +53,7 @@ namespace RuntimeTests
             engineApi.crdtSendToRenderer(null).Returns(_ => UniTask.CompletedTask);
 
             var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
-            sandbox.Run();
+            sandbox.Start();
             await UniTask.DelayFrame(3);
             Assert.That(Thread.CurrentThread.ManagedThreadId, Is.Not.EqualTo(sandbox.Thread.ManagedThreadId));
             
@@ -79,7 +79,7 @@ namespace RuntimeTests
             });
         
             var sandbox = new RuntimeSandbox(MinimalScene, engineApi);
-            sandbox.Run();
+            sandbox.Start();
             await UniTask.DelayFrame(130);
             sandbox.Dispose();
             Assert.That(invocationNumber, Is.EqualTo(3));

@@ -19,7 +19,7 @@ namespace RuntimeTests.Manual
             {
                 await request.SendWebRequest();
                 _sandbox = new RuntimeSandbox(request.downloadHandler.text);
-                _sandbox.Run();
+                _sandbox.Start();
             }
         }
         

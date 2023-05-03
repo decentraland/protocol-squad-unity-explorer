@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using DCL.CRDT;
 using JSInterop;
 using Microsoft.ClearScript.JavaScript;
+using VContainer;
 
 namespace DCLRuntime
 {
@@ -10,6 +11,7 @@ namespace DCLRuntime
     {
         private readonly ComponentManager _componentManager;
 
+        [Inject]
         public EngineApi(ComponentManager componentManager)
         {
             _componentManager = componentManager;
