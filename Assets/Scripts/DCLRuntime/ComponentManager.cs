@@ -12,12 +12,13 @@ namespace DCLRuntime
     public class ComponentManager : IDisposable
     {
         private readonly SceneEntityManager _sceneEntityManager;
-
+        private readonly MeshHandler _meshHandler;
 
         [Inject]
-        public ComponentManager(SceneEntityManager sceneEntityManager)
+        public ComponentManager(SceneEntityManager sceneEntityManager, MeshHandler meshHandler)
         {
             _sceneEntityManager = sceneEntityManager;
+            _meshHandler = meshHandler;
         }
 
         public void Dispose()
@@ -54,7 +55,7 @@ namespace DCLRuntime
                     break;
                 case ComponentID.MESH_RENDERER:
                     var meshRendererData = ProtoSerialization.Deserialize<PBMeshRenderer>(data);
-                    meshRendererData.ApplyOn(entity);
+                    _meshHandler.ApplyOn(meshRendererData, entity);
                     break;
                 case ComponentID.MESH_COLLIDER:
                     var meshColliderData = ProtoSerialization.Deserialize<PBMeshCollider>(data);
