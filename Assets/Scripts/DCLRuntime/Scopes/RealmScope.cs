@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DCLRuntime.AssetsDB;
 using DCLRuntime.ComponentHandlers;
 using VContainer;
@@ -12,6 +13,7 @@ namespace DCLRuntime
             builder.Register<SceneCreator>(Lifetime.Singleton);
             builder.Register<MaterialCache>(Lifetime.Singleton);
             builder.Register<MeshHandler>(Lifetime.Singleton);
+            builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
             builder.RegisterComponentInHierarchy<RealmLoader>();
         }
     }

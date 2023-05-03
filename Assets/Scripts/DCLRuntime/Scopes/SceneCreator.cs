@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DCLRuntime.Utils;
 using RemoteData;
@@ -12,12 +13,14 @@ namespace DCLRuntime
     public class SceneCreator
     {
         readonly LifetimeScope currentScope;
-
+        private readonly CancellationToken _globalCancellationToken;
         LifetimeScope instantScope;
-
-        public SceneCreator(LifetimeScope lifetimeScope)
+    
+        [Inject]
+        public SceneCreator(LifetimeScope lifetimeScope, CancellationToken globalCancellationToken)
         {
             currentScope = lifetimeScope;
+            _globalCancellationToken = globalCancellationToken;
         }
 
         public void Create(SceneData sceneData, string urnBaseUrl) => DoCreate(sceneData, urnBaseUrl).Forget();
@@ -31,7 +34,8 @@ namespace DCLRuntime
 
             var sceneUrn = urnFactory.Create(data.hash);
 
-            var sceneJson = (await UnityWebRequest.Get(sceneUrn.URL).SendWebRequest()).downloadHandler.text;
+            var sceneJson = (await UnityWebRequest.Get(sceneUrn.URL).SendWebRequest().WithCancellation(_globalCancellationToken)).downloadHandler.text;
+            _globalCancellationToken.ThrowIfCancellationRequested();
             var sceneJsonWrapper = new SceneJsonWrapper(sceneJson);
             
             using (LifetimeScope.EnqueueParent(currentScope))

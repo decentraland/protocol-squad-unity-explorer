@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using RemoteData;
@@ -11,7 +12,7 @@ namespace DCLRuntime
     {
         [SerializeField] private string endPoint = "https://sdk-team-cdn.decentraland.org/ipfs/goerli-plaza-main/about";
         [Inject] [UsedImplicitly] private SceneCreator _sceneCreator;
-
+        [Inject] [UsedImplicitly] private CancellationToken _globalCancellationToken;
 
         public async void Start()
         {
@@ -26,7 +27,8 @@ namespace DCLRuntime
                 urnFactory ??= new UrnFactory(urn.BaseUrl);
 
                 Debug.Log($"loading {urn.URL}");
-                var sceneJson = (await UnityWebRequest.Get(urn.URL).SendWebRequest()).downloadHandler.text;
+                var sceneJson = (await UnityWebRequest.Get(urn.URL).SendWebRequest().WithCancellation(_globalCancellationToken)).downloadHandler.text;
+                _globalCancellationToken.ThrowIfCancellationRequested();
                 var sceneData = sceneJson.ToSceneData();
                 _sceneCreator.Create(sceneData, urn.BaseUrl);
             }
